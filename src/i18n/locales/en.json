@@ -1,4 +1,10 @@
 {
-  "name": "Test",
-  "age": 25
+  "title": "One search - endless possibilities",
+  "deception": "We help students find the best courses, centers, and educational opportunities worldwide. With expert recommendations and real student reviews, we make your learning journey easier.",
+  "home": "Home",
+  "about": "About Us",
+  "reuses": "Resources",
+  "like": "Favorites",
+  "signIn": "Sign In",
+  "signUp": "Sign Up"
 }

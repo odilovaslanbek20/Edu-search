@@ -1,4 +1,10 @@
 {
-  "name": "Test",
-  "age": 25
+  "title": "Bir qidiruv - cheksiz imkoniyatlar",
+  "deception": "Biz talabalarga dunyo bo'ylab eng yaxshi kurslar, markazlar va ta'lim imkoniyatlarini topishda yordam beramiz. Mutaxassislarning tavsiyalari va talabalarning haqiqiy sharhlari bilan ta'lim safaringizni osonlashtiramiz.",
+  "home": "Bosh sahifa",
+  "about": "Biz haqimizda",
+  "reuses": "Resusrlar",
+  "like": "Sevimlilar",
+  "signIn": "Kirish",
+  "signUp": "Ro'yxatdan o'tish"
 }
