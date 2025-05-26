@@ -5,25 +5,20 @@ import { useTranslation } from 'react-i18next'
 const LanguageModal = () => {
 	const { i18n } = useTranslation()
 	const [open, setOpen] = useState(false)
-	const [selectedLang, setSelectedLang] = useState('uz')
 
 	const languages = [
 		{ code: 'uz', label: 'UZ', flag: 'uz.svg' },
 		{ code: 'ru', label: 'RU', flag: 'ru.svg' },
 		{ code: 'en', label: 'EN', flag: 'gb.svg' },
 	]
+	
+	const currentLang = languages.find(lang => lang.code === i18n.language) || languages[0]
 
 	const handleLanguageSelect = (code: string) => {
-		setSelectedLang(code)
+		i18n.changeLanguage(code)
+		localStorage.setItem('i18nextLng', code)
 		setOpen(false)
-		changeLang(code)
 	}
-
-	const changeLang = (lang: string) => {
-		i18n.changeLanguage(lang)
-	}
-
-	const currentLang = languages.find(l => l.code === selectedLang)
 
 	return (
 		<div className='relative inline-block text-left'>
@@ -33,10 +28,10 @@ const LanguageModal = () => {
 			>
 				<img
 					className='w-[30px] max-[500px]:w-[20px] rounded-full'
-					src={currentLang?.flag}
+					src={currentLang.flag}
 					alt='language'
 				/>
-				<p className='font-medium text-sm text-[#333]'>{currentLang?.label}</p>
+				<p className='font-medium text-sm text-[#333]'>{currentLang.label}</p>
 			</div>
 
 			<AnimatePresence>
@@ -54,7 +49,7 @@ const LanguageModal = () => {
 									key={lang.code}
 									onClick={() => handleLanguageSelect(lang.code)}
 									className={`w-full px-4 py-2 text-sm text-left flex items-center gap-2 hover:bg-gray-100 transition ${
-										selectedLang === lang.code
+										i18n.language === lang.code
 											? 'bg-gray-100 font-semibold'
 											: ''
 									}`}

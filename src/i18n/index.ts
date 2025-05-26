@@ -1,4 +1,3 @@
-
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
@@ -16,12 +15,14 @@ i18n
       uz: { translation: uz },
       ru: { translation: ru },
     },
-    lng: "uz",
-    fallbackLng: "uz",
+    fallbackLng: "uz", 
+    detection: {
+      order: ["localStorage", "navigator", "htmlTag"],
+      caches: ["localStorage"],
+    },
     interpolation: {
       escapeValue: false,
     },
   });
 
 export default i18n;
-

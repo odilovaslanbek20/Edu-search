@@ -1,10 +1,33 @@
 {
-  "title": "Bir qidiruv - cheksiz imkoniyatlar",
-  "deception": "Biz talabalarga dunyo bo'ylab eng yaxshi kurslar, markazlar va ta'lim imkoniyatlarini topishda yordam beramiz. Mutaxassislarning tavsiyalari va talabalarning haqiqiy sharhlari bilan ta'lim safaringizni osonlashtiramiz.",
+  "title": "Bitta qidiruv — cheksiz imkoniyatlar",
+  "deception": "Biz talabalarni eng yaxshi kurslar, markazlar va taʼlim imkoniyatlarini topishda yordam beramiz. Mutaxassislar tavsiyalari va haqiqiy talaba sharhlari bilan sizning o‘quv yo‘lingizni yengillashtiramiz.",
   "home": "Bosh sahifa",
   "about": "Biz haqimizda",
-  "reuses": "Resusrlar",
+  "reuses": "Resurslar",
   "like": "Sevimlilar",
   "signIn": "Kirish",
-  "signUp": "Ro'yxatdan o'tish"
+  "signUp": "Ro‘yxatdan o‘tish",
+  "register": {
+    "welcome_title": "Platformamizga xush kelibsiz",
+    "welcome_description": "Iltimos, akkaunt yaratish uchun formani to‘ldiring. Ro‘yxatdan o‘tganingizdan so‘ng barcha funksiyalar va vositalarga ega bo‘lasiz.",
+    "title": "Ro‘yxatdan o‘tish",
+    "first_name": "Ism",
+    "last_name": "Familiya",
+    "email": "Email",
+    "password": "Parol",
+    "phone": "Telefon raqami",
+    "role": "Rol",
+    "select_role": "Rolingizni tanlang",
+    "ceo": "Direktor",
+    "user": "Foydalanuvchi",
+    "first_name_placeholder": "Ali",
+    "last_name_placeholder": "Valiyev",
+    "email_placeholder": "ali@example.com",
+    "first_name_image": "Rasm yuklash...",
+    "password_placeholder": "••••••••",
+    "phone_placeholder": "+99890...",
+    "button": "Ro‘yxatdan o‘tish",
+    "already_account": "Akkauntingiz bormi?",
+    "login": "Kirish"
+  }
 }
