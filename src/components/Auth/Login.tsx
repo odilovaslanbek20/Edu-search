@@ -2,11 +2,56 @@ import { Button } from '@/components/ui/button'
 import { CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import usePostHooks from '../Hooks/usePostHooks'
 
 function Login() {
+	const url = import.meta.env.VITE_API_URL
+	const { response, loading, error, postData } = usePostHooks()
 	const { t } = useTranslation()
+	const [email, setEmail] = useState<string>('')
+	const [password, setPassword] = useState<string>('')
+
+	const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
+
+		await postData(
+			`${url}/users/login`,
+			{ email, password },
+			{
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}
+		)
+	}
+
+	console.log(response);
+
+	if (loading) {
+		return (
+			<div className='fixed w-full h-screen z-50 bg-[#fff]'>
+				<div className='flex justify-start mt-[50px] items-center h-screen flex-col'>
+					<div className='animate-spin rounded-full border-t-4 border-blue-500 border-8 w-16 h-16 mb-4'></div>
+					<p className='text-lg text-gray-700'>Loading data...</p>
+				</div>
+			</div>
+		)
+	}
+
+	if (error) {
+		return (
+			<div className='fixed w-full h-screen bg-[#fff] z-50 px-[20px]'>
+				<div className='flex justify-center items-center h-[200px]'>
+					<div className='bg-red-100 text-red-700 px-4 py-2 rounded-md shadow-md'>
+						{error}
+					</div>
+				</div>
+			</div>
+		)
+	}
 
 	return (
 		<section className='min-h-screen w-full flex items-center justify-center bg-[#d2c2de] font-[Roboto] px-4 max-[600px]:p-0'>
@@ -27,12 +72,14 @@ function Login() {
 						</CardTitle>
 					</CardHeader>
 
-					<form className='grid grid-cols-1 gap-4'>
+					<form onSubmit={handleLogin} className='grid grid-cols-1 gap-4'>
 						<div className='flex flex-col gap-1'>
 							<Label htmlFor='email'>{t('login.email')}</Label>
 							<Input
 								id='email'
 								type='email'
+								value={email}
+								onChange={e => setEmail(e.target.value)}
 								placeholder={t('login.email_placeholder')}
 								className='bg-white/60 border border-white/30'
 							/>
@@ -42,6 +89,8 @@ function Login() {
 							<Input
 								id='password'
 								type='password'
+								value={password}
+								onChange={e => setPassword(e.target.value)}
 								placeholder={t('login.password_placeholder')}
 								className='bg-white/60 border border-white/30'
 							/>

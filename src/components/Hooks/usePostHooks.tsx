@@ -1,35 +1,30 @@
 import { useState } from 'react'
 import axios from 'axios'
 
-type FormData = {
-	firstName: string,
-	lastName: string,
-	email: string,
-	phone: string,
-	password: string,
-	role: string,
-	image: string,
-}
+export default function usePostHooks<T = unknown>() {
+	const [response, setResponse] = useState<T | null>(null)
+	const [loading, setLoading] = useState(false)
+	const [error, setError] = useState<null | string>(null)
+	const [status, setStatus] = useState<string>("")
 
-export function usePostHooks() {
-	const [response, setResponse] = useState('')
-	const [loading, setLoading] = useState<boolean>(false)
-	const [error, setError] = useState<string>("")
-
-	const postData = async (url: string, formData: FormData) => {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const postData = async (url: string, data: object, _p0?: { headers: { 'Content-Type': string } }) => {
 		setLoading(true)
+		setError(null)
 		try {
-			const res = await axios.post(url, formData)
+			const res = await axios.post<T>(url, data)
 			setResponse(res.data)
-			setError("")
-		} catch (error: unknown) {
-			if (error instanceof Error) {
-				setError(error.message)
+			setStatus(res.status.toString())
+		} catch (err: unknown) {
+			if (err instanceof Error) {
+				setError(err.message)
+			} else {
+				setError('Nomaʼlum xatolik')
 			}
 		} finally {
 			setLoading(false)
 		}
 	}
 
-	return { response, loading, error, postData }
+	return { response, loading, error, status, postData }
 }

@@ -9,11 +9,93 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import usePostHooks from '../Hooks/usePostHooks'
 
 function Register() {
+	const url = import.meta.env.VITE_API_URL
+	const { response, loading, error, postData } = usePostHooks()
+	const {
+		response: response1,
+		loading: loading1,
+		error: error1,
+		status,
+		postData: postData1,
+	} = usePostHooks()
 	const { t } = useTranslation()
+	const [firstName, setFirstName] = useState<string>('')
+	const [lastName, setLastName] = useState<string>('')
+	const [email, setEmail] = useState<string>('')
+	const [phone, setPhone] = useState<string>('')
+	const [password, setPassword] = useState<string>('')
+	const [role, setRole] = useState<string>('')
+	const [image, setImage] = useState<string>('')
+	const navigate = useNavigate()
+
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
+
+		const formData = new FormData()
+		formData.append('firstName', firstName)
+		formData.append('lastName', lastName)
+		formData.append('email', email)
+		formData.append('phone', phone)
+		formData.append('password', password)
+		formData.append('role', role)
+		if (image) {
+			formData.append('image', image)
+		}
+
+		const formDataObj = Object.fromEntries(formData.entries())
+
+		await postData(`${url}/users/register`, formDataObj, {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
+		})
+
+		await postData1(
+			`${url}/users/send-otp`,
+			{ email },
+			{
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}
+		)
+		if (status === '200') {
+			navigate('/otp')
+		}
+
+		localStorage.setItem('email', email)
+	}
+
+	console.log(response || response1)
+
+	if (loading || loading1) {
+		return (
+			<div className='fixed w-full h-screen z-50 bg-[#fff]'>
+				<div className='flex justify-start mt-[50px] items-center h-screen flex-col'>
+					<div className='animate-spin rounded-full border-t-4 border-blue-500 border-8 w-16 h-16 mb-4'></div>
+					<p className='text-lg text-gray-700'>Loading data...</p>
+				</div>
+			</div>
+		)
+	}
+
+	if (error || error1) {
+		return (
+			<div className='fixed w-full h-screen bg-[#fff] z-50 px-[20px]'>
+				<div className='flex justify-center items-center h-[200px]'>
+					<div className='bg-red-100 text-red-700 px-4 py-2 rounded-md shadow-md'>
+						{error || error1}
+					</div>
+				</div>
+			</div>
+		)
+	}
 
 	return (
 		<section className='min-h-screen w-full flex items-center justify-center bg-[#d2c2de] font-[Roboto] px-4 overflow-x-hidden max-[768px]:p-0'>
@@ -34,62 +116,82 @@ function Register() {
 						</CardTitle>
 					</CardHeader>
 
-					<form className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+					<form
+						onSubmit={handleSubmit}
+						className='grid grid-cols-1 sm:grid-cols-2 gap-4'
+					>
 						<div className='flex flex-col gap-1 col-span-1'>
 							<Label htmlFor='firstName'>{t('register.first_name')}</Label>
 							<Input
 								id='firstName'
+								value={firstName}
+								onChange={e => setFirstName(e.target.value)}
 								placeholder={t('register.first_name_placeholder')}
 								className='bg-white/60 border border-white/30 w-full'
 							/>
 						</div>
+
 						<div className='flex flex-col gap-1 col-span-1'>
 							<Label htmlFor='lastName'>{t('register.last_name')}</Label>
 							<Input
 								id='lastName'
+								value={lastName}
+								onChange={e => setLastName(e.target.value)}
 								placeholder={t('register.last_name_placeholder')}
 								className='bg-white/60 border border-white/30 w-full'
 							/>
 						</div>
+
 						<div className='flex flex-col gap-1 col-span-1'>
 							<Label htmlFor='email'>{t('register.email')}</Label>
 							<Input
 								id='email'
 								type='email'
+								value={email}
+								onChange={e => setEmail(e.target.value)}
 								placeholder={t('register.email_placeholder')}
 								className='bg-white/60 border border-white/30 w-full'
 							/>
 						</div>
+
 						<div className='flex flex-col gap-1 col-span-1'>
 							<Label htmlFor='password'>{t('register.password')}</Label>
 							<Input
 								id='password'
 								type='password'
+								value={password}
+								onChange={e => setPassword(e.target.value)}
 								placeholder={t('register.password_placeholder')}
 								className='bg-white/60 border border-white/30 w-full'
 							/>
 						</div>
+
 						<div className='flex flex-col gap-1 col-span-1'>
 							<Label htmlFor='phone'>{t('register.phone')}</Label>
 							<Input
 								id='phone'
 								type='tel'
+								value={phone}
+								onChange={e => setPhone(e.target.value)}
 								placeholder={t('register.phone_placeholder')}
 								className='bg-white/60 border border-white/30 w-full'
 							/>
 						</div>
+
 						<div className='flex flex-col gap-1 col-span-1'>
 							<Label htmlFor='image'>{t('register.image')}</Label>
 							<Input
 								id='image'
 								type='file'
 								accept='image/*'
+								onChange={e => setImage(e.target.value)}
 								className='bg-white/60 border border-white/30 w-full'
 							/>
 						</div>
+
 						<div className='flex flex-col gap-1 col-span-1 sm:col-span-2'>
 							<Label htmlFor='role'>{t('register.role')}</Label>
-							<Select>
+							<Select onValueChange={setRole}>
 								<SelectTrigger
 									id='role'
 									className='bg-white/60 border border-white/30 w-full'
@@ -102,6 +204,7 @@ function Register() {
 								</SelectContent>
 							</Select>
 						</div>
+
 						<div className='col-span-1 sm:col-span-2'>
 							<Button
 								type='submit'
