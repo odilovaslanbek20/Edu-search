@@ -4,16 +4,18 @@ import { GoHeart } from 'react-icons/go'
 import { useState } from 'react'
 import LanguageModal from './Language'
 import { FiMenu, FiX } from 'react-icons/fi'
+import { MdQueue } from "react-icons/md";
 
 function Header() {
 	const { t } = useTranslation()
 	const [menuOpen, setMenuOpen] = useState(false)
+	const token = localStorage.getItem('token')
 
 	const toggleMenu = () => setMenuOpen(!menuOpen)
 
 	return (
 		<header className='w-full py-[15px] bg-white fixed top-0 left-0 border-b border-gray-200 z-50'>
-			<div className='w-[90%] m-auto flex items-center justify-between'>
+			<div className='w-[95%] m-auto flex items-center justify-between'>
 				<Link to='/'>
 					<img
 						className='w-[160px] max-[500px]:w-[130px]'
@@ -23,6 +25,11 @@ function Header() {
 				</Link>
 
 				<nav className='flex items-center gap-8 max-[1180px]:hidden'>
+					{token ? (
+						<>
+						
+						</>
+					) : ('')}
 					{[
 						{ to: '/', label: t('home') },
 						{ to: '#', label: t('about') },
@@ -46,6 +53,19 @@ function Header() {
 						{t('like')}
 						<span className='absolute bottom-0 left-0 w-0 h-0.5 bg-[#461773] transition-all duration-300 group-hover:w-full'></span>
 					</Link>
+
+					<Link
+						to='#'
+						className='text-gray-600 hover:text-[#461773] font-medium flex items-center gap-2 relative group transition-colors duration-300'
+					>
+					 <MdQueue/>
+						{t('queue')}
+						<span className='absolute bottom-0 left-0 w-0 h-0.5 bg-[#461773] transition-all duration-300 group-hover:w-full'></span>
+					</Link>
+
+					<div className="">
+						<p>{t("ceo")}</p>
+					</div>
 				</nav>
 
 				<div className='flex items-center gap-[15px]'>

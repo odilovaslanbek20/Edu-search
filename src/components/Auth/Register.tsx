@@ -35,27 +35,28 @@ function Register() {
 	const navigate = useNavigate()
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
+	e.preventDefault()
 
-		const formData = new FormData()
-		formData.append('firstName', firstName)
-		formData.append('lastName', lastName)
-		formData.append('email', email)
-		formData.append('phone', phone)
-		formData.append('password', password)
-		formData.append('role', role)
-		if (image) {
-			formData.append('image', image)
-		}
+	const formData = new FormData()
+	formData.append('firstName', firstName)
+	formData.append('lastName', lastName)
+	formData.append('email', email)
+	formData.append('phone', phone)
+	formData.append('password', password)
+	formData.append('role', role)
+	if (image) {
+		formData.append('image', image)
+	}
 
-		const formDataObj = Object.fromEntries(formData.entries())
+	const formDataObj = Object.fromEntries(formData.entries())
 
-		await postData(`${url}/users/register`, formDataObj, {
-			headers: {
-				'Content-Type': 'multipart/form-data',
-			},
-		})
+	await postData(`${url}/users/register`, formDataObj, {
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
+	})
 
+	if (response && status === '200') {
 		await postData1(
 			`${url}/users/send-otp`,
 			{ email },
@@ -65,12 +66,15 @@ function Register() {
 				},
 			}
 		)
+
 		if (status === '200') {
 			navigate('/otp')
 		}
 
 		localStorage.setItem('email', email)
 	}
+}
+
 
 	console.log(response || response1)
 
