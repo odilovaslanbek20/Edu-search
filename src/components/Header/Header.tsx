@@ -4,7 +4,8 @@ import { GoHeart } from 'react-icons/go'
 import { useState } from 'react'
 import LanguageModal from './Language'
 import { FiMenu, FiX } from 'react-icons/fi'
-import { MdQueue } from "react-icons/md";
+import { MdQueue } from 'react-icons/md'
+import CeoDropdown from './CeoPanel'
 
 function Header() {
 	const { t } = useTranslation()
@@ -25,11 +26,7 @@ function Header() {
 				</Link>
 
 				<nav className='flex items-center gap-8 max-[1180px]:hidden'>
-					{token ? (
-						<>
-						
-						</>
-					) : ('')}
+					{token ? <></> : <></>}
 					{[
 						{ to: '/', label: t('home') },
 						{ to: '#', label: t('about') },
@@ -58,14 +55,12 @@ function Header() {
 						to='#'
 						className='text-gray-600 hover:text-[#461773] font-medium flex items-center gap-2 relative group transition-colors duration-300'
 					>
-					 <MdQueue/>
+						<MdQueue />
 						{t('queue')}
 						<span className='absolute bottom-0 left-0 w-0 h-0.5 bg-[#461773] transition-all duration-300 group-hover:w-full'></span>
 					</Link>
 
-					<div className="">
-						<p>{t("ceo")}</p>
-					</div>
+					<CeoDropdown />
 				</nav>
 
 				<div className='flex items-center gap-[15px]'>
@@ -88,7 +83,7 @@ function Header() {
     ${menuOpen ? 'hidden' : 'block'} 
     min-[750px]:border min-[750px]:border-[#461773] min-[750px]:px-[10px] min-[750px]:py-[7px]`}
 					>
-						<FiMenu className='text-[25px]'/>
+						<FiMenu className='text-[25px]' />
 					</div>
 				</div>
 			</div>
