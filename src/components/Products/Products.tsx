@@ -1,4 +1,9 @@
 import useGetHooks from '../Hooks/useGetHooks'
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
+import { useState } from 'react'
+
+// shadcn/ui Button komponentini o'zingizning loyihangizdagi yo'l bilan import qiling
+import { Button } from '@/components/ui/button'
 
 function Products() {
 	const url = import.meta.env.VITE_API_URL
@@ -41,6 +46,15 @@ function Products() {
 		image?: string
 	}
 
+	const [likedCenters, setLikedCenters] = useState<{ [key: number]: boolean }>({})
+
+	const toggleLike = (id: number) => {
+		setLikedCenters(prev => ({
+			...prev,
+			[id]: !prev[id],
+		}))
+	}
+
 	if (isLoading) {
 		return (
 			<div className='fixed w-full h-screen z-50 bg-white'>
@@ -64,7 +78,8 @@ function Products() {
 		)
 	}
 
-	console.log(data.data)
+	console.log(data.data);
+	
 
 	return (
 		<section className='max-w-7xl mx-auto px-6 py-10 min-h-screen'>
@@ -76,8 +91,22 @@ function Products() {
 					data.data.map((center: Center) => (
 						<div
 							key={center.id}
-							className='bg-white border border-blue-200 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col'
+							className='relative bg-white border border-blue-200 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col'
 						>
+							<Button
+								variant='ghost'
+								className='absolute top-4 right-4 p-0 text-2xl'
+								type='button'
+								onClick={() => toggleLike(center.id)}
+								aria-label='Like center'
+							>
+								{likedCenters[center.id] ? (
+									<AiFillHeart className='text-red-500' />
+								) : (
+									<AiOutlineHeart className='text-gray-400 hover:text-red-500 transition-colors duration-300' />
+								)}
+							</Button>
+
 							<img
 								src={center?.image}
 								alt={center?.name}
