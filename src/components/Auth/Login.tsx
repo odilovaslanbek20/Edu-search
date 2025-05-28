@@ -2,8 +2,7 @@ import { Button } from '@/components/ui/button'
 import { CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import Cookies from 'js-cookie'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import usePostHooks from '../Hooks/usePostHooks'
@@ -23,7 +22,6 @@ function Login() {
 
 	const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-
 		await postData(
 			`${url}/users/login`,
 			{ email, password },
@@ -33,20 +31,15 @@ function Login() {
 				},
 			}
 		)
+	}
 
-		if (response?.accessToken && response?.refreshToken) {
-			Cookies.set('accessToken', response.accessToken, { expires: 1 }) // 1 kun
-			Cookies.set('refreshToken', response.refreshToken, { expires: 7 }) // 7 kun
-
+	useEffect(() => {
+		if (response) {
+			localStorage.setItem('accessToken', response.accessToken)
+			localStorage.setItem('refreshToken', response.refreshToken)
 			navigate('/')
 		}
-	}
-
-	console.log(response)
-
-	if (response) {
-		navigate('/')
-	}
+	}, [response, navigate])
 
 	if (loading) {
 		return (

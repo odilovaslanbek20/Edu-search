@@ -10,7 +10,7 @@ import CeoDropdown from './CeoPanel'
 function Header() {
 	const { t } = useTranslation()
 	const [menuOpen, setMenuOpen] = useState(false)
-	const token = localStorage.getItem('token')
+	const token = localStorage.getItem('accessToken')
 
 	const toggleMenu = () => setMenuOpen(!menuOpen)
 
@@ -49,7 +49,7 @@ function Header() {
 						{t('like')}
 						<span className='absolute bottom-0 left-0 w-0 h-0.5 bg-[#461773] transition-all duration-300 group-hover:w-full'></span>
 					</Link>
-					
+
 					{token && (
 						<>
 							<Link
