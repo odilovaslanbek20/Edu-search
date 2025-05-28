@@ -16,7 +16,7 @@ function Header() {
 
 	return (
 		<header className='w-full py-[15px] bg-white fixed top-0 left-0 border-b border-gray-200 z-50'>
-			<div className='w-[98%] m-auto flex items-center justify-between'>
+			<div className='w-[95%] m-auto flex items-center justify-between'>
 				<Link to='/'>
 					<img
 						className='w-[160px] max-[500px]:w-[130px]'
