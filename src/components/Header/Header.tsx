@@ -1,16 +1,63 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { GoHeart } from 'react-icons/go'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import LanguageModal from './Language'
 import { FiMenu, FiX } from 'react-icons/fi'
 import { MdQueue } from 'react-icons/md'
 import CeoDropdown from './CeoPanel'
+import useGetHooks from '../Hooks/useGetHooks'
+
+type User = {
+	id: number
+	name: string
+	email: string
+	role: string
+}
 
 function Header() {
+	const url = import.meta.env.VITE_API_URL
 	const { t } = useTranslation()
 	const [menuOpen, setMenuOpen] = useState(false)
 	const token = localStorage.getItem('accessToken')
+	const [user, setUser] = useState<User | null>(() => {
+		const stored = localStorage.getItem('myData')
+		return stored ? JSON.parse(stored) : null
+	})
+
+	const { data, isLoading, error, refetch } = useGetHooks<{ data: User }>(
+		`${url}/users/mydata`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`,
+				Accept: 'application/json',
+			},
+		},
+		{
+			enabled: !!token,
+		}
+	)
+
+	console.log(isLoading)
+	console.log(error)
+
+	useEffect(() => {
+		if (data?.data) {
+			localStorage.setItem('myData', JSON.stringify(data.data))
+			setUser(data.data)
+		}
+	}, [data])
+
+	useEffect(() => {
+		if (token) {
+			refetch()
+		} else {
+			setUser(null)
+			localStorage.removeItem('myData')
+		}
+	}, [token, refetch])
+
+	const ceoUser = user?.role
 
 	const toggleMenu = () => setMenuOpen(!menuOpen)
 
@@ -61,7 +108,13 @@ function Header() {
 								<span className='absolute bottom-0 left-0 w-0 h-0.5 bg-[#461773] transition-all duration-300 group-hover:w-full'></span>
 							</Link>
 
-							<CeoDropdown />
+							{data && ceoUser === 'CEO' ? (
+								<>
+									<CeoDropdown />
+								</>
+							) : (
+								''
+							)}
 						</>
 					)}
 				</nav>
@@ -153,6 +206,21 @@ function Header() {
 				>
 					{t('signUp')}
 				</Link>
+
+				<div className='absolute top-full left-0 w-full bg-yellow-100 text-yellow-800 p-2 text-center text-sm'>
+					{isLoading && <p>Ma'lumotlar yuklanmoqda...</p>}
+					{error && (
+						<p>
+							Xatolik yuz berdi: {(error)?.message || "Noma'lum xatolik"}
+						</p>
+					)}
+					{!isLoading && !error && user && (
+						<p>
+							Foydalanuvchi roli: <strong>{user.role}</strong>
+						</p>
+					)}
+					{!token && <p>Tizimga kiritilmagan</p>}
+				</div>
 			</div>
 		</header>
 	)

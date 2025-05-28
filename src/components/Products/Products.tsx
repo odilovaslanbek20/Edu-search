@@ -101,9 +101,22 @@ function Products() {
 						<Button
 							variant='ghost'
 							size='icon'
-							className='absolute top-3 right-3 cursor-pointer bg-[#461773] hover:bg-[#5f2099] text-[#fff] hover:text-[#f56161] transition-colors duration-300'
+							className='
+    absolute top-3 right-3
+    bg-[#461773] hover:bg-[#5f2099]
+    text-white hover:text-pink-400
+		border border-[#fff]
+    shadow-md hover:shadow-lg
+    rounded-full
+    p-2
+    transition
+    duration-300
+    ease-in-out
+    focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-offset-1
+    cursor-pointer
+  '
 						>
-							<AiOutlineHeart />
+							<AiOutlineHeart className='text-xl' />
 						</Button>
 
 						{center?.image && (
