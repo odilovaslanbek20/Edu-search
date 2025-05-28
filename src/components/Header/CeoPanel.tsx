@@ -16,7 +16,7 @@ const CeoDropdown = () => {
     <div className="relative inline-block">
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
-          <div className="cursor-pointer px-4 py-2 bg-muted rounded-md text-sm font-medium flex items-center gap-2 hover:bg-muted/80 transition-colors">
+          <div className="cursor-pointer px-4 py-2 bg-muted rounded-md text-sm font-medium flex items-center gap-2 hover:bg-muted/80 transition-colors line-clamp-1 ">
             {t("ceo")}
             <HiOutlineChevronDown className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
           </div>

@@ -21,7 +21,6 @@ function Register() {
 		response: response1,
 		loading: loading1,
 		error: error1,
-		status,
 		postData: postData1,
 	} = usePostHooks()
 	const { t } = useTranslation()
@@ -56,7 +55,7 @@ function Register() {
 		},
 	})
 
-	if (response && status === '200') {
+	if (response) {
 		await postData1(
 			`${url}/users/send-otp`,
 			{ email },
@@ -67,7 +66,7 @@ function Register() {
 			}
 		)
 
-		if (status === '200') {
+		if (response1) {
 			navigate('/otp')
 		}
 

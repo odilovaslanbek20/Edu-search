@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import usePostHooks from '../Hooks/usePostHooks'
 
 function Login() {
@@ -13,6 +13,7 @@ function Login() {
 	const { t } = useTranslation()
 	const [email, setEmail] = useState<string>('')
 	const [password, setPassword] = useState<string>('')
+	const navigate = useNavigate()
 
 	const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -28,7 +29,9 @@ function Login() {
 		)
 	}
 
-	console.log(response);
+	if (response) {
+		navigate('/')
+	}
 
 	if (loading) {
 		return (

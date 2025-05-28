@@ -16,7 +16,7 @@ function Header() {
 
 	return (
 		<header className='w-full py-[15px] bg-white fixed top-0 left-0 border-b border-gray-200 z-50'>
-			<div className='w-[95%] m-auto flex items-center justify-between'>
+			<div className='w-[98%] m-auto flex items-center justify-between'>
 				<Link to='/'>
 					<img
 						className='w-[160px] max-[500px]:w-[130px]'
@@ -25,8 +25,7 @@ function Header() {
 					/>
 				</Link>
 
-				<nav className='flex items-center gap-8 max-[1180px]:hidden'>
-					{token ? <></> : <></>}
+				<nav className='flex items-center gap-5 max-[1330px]:hidden'>
 					{[
 						{ to: '/', label: t('home') },
 						{ to: '#', label: t('about') },
@@ -50,36 +49,41 @@ function Header() {
 						{t('like')}
 						<span className='absolute bottom-0 left-0 w-0 h-0.5 bg-[#461773] transition-all duration-300 group-hover:w-full'></span>
 					</Link>
-
-					<Link
-						to='#'
-						className='text-gray-600 hover:text-[#461773] font-medium flex items-center gap-2 relative group transition-colors duration-300'
-					>
-						<MdQueue />
-						{t('queue')}
-						<span className='absolute bottom-0 left-0 w-0 h-0.5 bg-[#461773] transition-all duration-300 group-hover:w-full'></span>
-					</Link>
-
-					<CeoDropdown />
+					
+					{token && (
+						<>
+							<Link
+								to='#'
+								className='text-gray-600 hover:text-[#461773] font-medium flex items-center gap-2 relative group transition-colors duration-300'
+							>
+								<MdQueue />
+								{t('queue')}
+								<span className='absolute bottom-0 left-0 w-0 h-0.5 bg-[#461773] transition-all duration-300 group-hover:w-full'></span>
+							</Link>
+						</>
+					)}
 				</nav>
 
 				<div className='flex items-center gap-[15px]'>
+					<div className='max-[600px]:hidden'>
+						<CeoDropdown />
+					</div>
 					<LanguageModal />
 
 					<Link to='/login'>
-						<p className='text-gray-600 hover:text-[#fff] hover:bg-[#461773] border border-[#461773] rounded-lg transition-all duration-500 px-4 py-[7px] font-medium max-[750px]:hidden'>
+						<p className='text-gray-600 hover:text-[#fff] hover:bg-[#461773] border border-[#461773] rounded-lg transition-all duration-500 px-4 py-[7px] font-medium max-[880px]:hidden'>
 							{t('signIn')}
 						</p>
 					</Link>
 
 					<Link to='/register'>
-						<p className='text-white bg-[#461773] px-4 py-2 rounded-lg hover:opacity-90 transition cursor-pointer max-[750px]:hidden'>
+						<p className='text-white bg-[#461773] px-4 py-2 rounded-lg hover:opacity-90 transition cursor-pointer max-[880px]:hidden'>
 							{t('signUp')}
 						</p>
 					</Link>
 					<div
 						onClick={toggleMenu}
-						className={`min-[1180px]:hidden flex items-center justify-center text-gray-600 bg-transparent transition-all duration-300 rounded-lg
+						className={`min-[1330px]:hidden flex items-center justify-center text-gray-600 bg-transparent transition-all duration-300 rounded-lg
     ${menuOpen ? 'hidden' : 'block'} 
     min-[750px]:border min-[750px]:border-[#461773] min-[750px]:px-[10px] min-[750px]:py-[7px]`}
 					>
@@ -97,8 +101,8 @@ function Header() {
 			></div>
 
 			<div
-				className={`min-[1180px]:hidden fixed top-0 ${
-					menuOpen ? 'max-[1210px]:left-0' : 'max-[1210px]:left-[-100%]'
+				className={`min-[1330px]:hidden fixed top-0 ${
+					menuOpen ? 'max-[1330px]:left-0' : 'max-[1330px]:left-[-100%]'
 				} w-[280px] h-full bg-white shadow-lg z-50 p-6 flex flex-col gap-5 transition-all duration-500`}
 			>
 				<div className='flex items-center justify-between'>
@@ -132,17 +136,21 @@ function Header() {
 					{t('like')}
 				</Link>
 
+				<div className='min-[600px]:hidden'>
+					<CeoDropdown />
+				</div>
+
 				<hr />
 
 				<Link
 					to='/login'
-					className='text-gray-600 border border-[#461773] px-4 py-[7px] rounded-lg transition-all hidden max-[750px]:block'
+					className='text-gray-600 border border-[#461773] px-4 py-[7px] rounded-lg transition-all hidden max-[880px]:block'
 				>
 					{t('signIn')}
 				</Link>
 				<Link
 					to='/register'
-					className='text-white bg-[#461773] px-4 py-[9px] rounded-lg transition-all hidden max-[750px]:block'
+					className='text-white bg-[#461773] px-4 py-[9px] rounded-lg transition-all hidden max-[880px]:block'
 				>
 					{t('signUp')}
 				</Link>
