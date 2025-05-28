@@ -2,8 +2,8 @@ import { Button } from '@/components/ui/button'
 import { CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import Cookies from 'js-cookie'
 import { useState } from 'react'
-import useSignIn from 'react-auth-kit'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import usePostHooks from '../Hooks/usePostHooks'
@@ -20,7 +20,6 @@ function Login() {
 	const [email, setEmail] = useState<string>('')
 	const [password, setPassword] = useState<string>('')
 	const navigate = useNavigate()
-	const signIn = useSignIn()
 
 	const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -35,13 +34,11 @@ function Login() {
 			}
 		)
 
-		if (response) {
-			signIn({
-				token: response.accessToken,
-				expiresIn: 3600,
-				tokenType: 'Bearer',
-				refreshToken: response.refreshToken,
-			})
+		if (response?.accessToken && response?.refreshToken) {
+			Cookies.set('accessToken', response.accessToken, { expires: 1 }) // 1 kun
+			Cookies.set('refreshToken', response.refreshToken, { expires: 7 }) // 7 kun
+
+			navigate('/')
 		}
 	}
 
