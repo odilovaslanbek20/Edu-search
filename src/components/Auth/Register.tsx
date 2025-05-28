@@ -9,7 +9,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import usePostHooks from '../Hooks/usePostHooks'
@@ -34,46 +34,51 @@ function Register() {
 	const navigate = useNavigate()
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-	e.preventDefault()
+		e.preventDefault()
 
-	const formData = new FormData()
-	formData.append('firstName', firstName)
-	formData.append('lastName', lastName)
-	formData.append('email', email)
-	formData.append('phone', phone)
-	formData.append('password', password)
-	formData.append('role', role)
-	if (image) {
-		formData.append('image', image)
-	}
-
-	const formDataObj = Object.fromEntries(formData.entries())
-
-	await postData(`${url}/users/register`, formDataObj, {
-		headers: {
-			'Content-Type': 'multipart/form-data',
-		},
-	})
-
-	if (response) {
-		await postData1(
-			`${url}/users/send-otp`,
-			{ email },
-			{
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			}
-		)
-
-		if (response1) {
-			navigate('/otp')
+		const formData = new FormData()
+		formData.append('firstName', firstName)
+		formData.append('lastName', lastName)
+		formData.append('email', email)
+		formData.append('phone', phone)
+		formData.append('password', password)
+		formData.append('role', role)
+		if (image) {
+			formData.append('image', image)
 		}
+
+		const formDataObj = Object.fromEntries(formData.entries())
+
+		await postData(`${url}/users/register`, formDataObj, {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
+		})
 
 		localStorage.setItem('email', email)
 	}
-}
 
+	useEffect(() => {
+		if (response) {
+			const sendOtp = async () => {
+				await postData1(
+					`${url}/users/send-otp`,
+					{ email },
+					{
+						headers: {
+							'Content-Type': 'application/json',
+						},
+					}
+				)
+			}
+
+			sendOtp()
+		}
+	}, [email, postData1, response, url])
+
+	if (response1) {
+		navigate('/otp')
+	}
 
 	console.log(response || response1)
 

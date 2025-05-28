@@ -4,12 +4,14 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useState, useRef } from 'react'
 import usePostHooks from '../Hooks/usePostHooks'
+import { useNavigate } from 'react-router-dom'
 
 function Otp() {
 	const url = import.meta.env.VITE_API_URL
 	const { response, loading, error, postData } = usePostHooks()
 	const [otp, setOtp] = useState(Array(5).fill(''))
 	const inputsRef = useRef<(HTMLInputElement | null)[]>([])
+	const navigate = useNavigate()
 
 	const handleChange = (index: number, value: string) => {
 		if (!/^[0-9]?$/.test(value)) return
@@ -45,6 +47,10 @@ function Otp() {
 				},
 			}
 		)
+	}
+
+	if (response) {
+		navigate('/login')
 	}
 
 	console.log(response)
