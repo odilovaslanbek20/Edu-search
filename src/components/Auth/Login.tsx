@@ -3,17 +3,24 @@ import { CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useState } from 'react'
+import useSignIn from 'react-auth-kit'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import usePostHooks from '../Hooks/usePostHooks'
 
+interface AuthResponse {
+	accessToken: string
+	refreshToken: string
+}
+
 function Login() {
 	const url = import.meta.env.VITE_API_URL
-	const { response, loading, error, postData } = usePostHooks()
+	const { response, loading, error, postData } = usePostHooks<AuthResponse>()
 	const { t } = useTranslation()
 	const [email, setEmail] = useState<string>('')
 	const [password, setPassword] = useState<string>('')
 	const navigate = useNavigate()
+	const signIn = useSignIn()
 
 	const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -27,7 +34,18 @@ function Login() {
 				},
 			}
 		)
+
+		if (response) {
+			signIn({
+				token: response.accessToken,
+				expiresIn: 3600,
+				tokenType: 'Bearer',
+				refreshToken: response.refreshToken,
+			})
+		}
 	}
+
+	console.log(response)
 
 	if (response) {
 		navigate('/')
