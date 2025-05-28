@@ -60,14 +60,13 @@ function Header() {
 								{t('queue')}
 								<span className='absolute bottom-0 left-0 w-0 h-0.5 bg-[#461773] transition-all duration-300 group-hover:w-full'></span>
 							</Link>
+
+							<CeoDropdown />
 						</>
 					)}
 				</nav>
 
 				<div className='flex items-center gap-[15px]'>
-					<div className='max-[600px]:hidden'>
-						<CeoDropdown />
-					</div>
 					<LanguageModal />
 
 					<Link to='/login'>

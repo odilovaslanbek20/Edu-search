@@ -9,6 +9,8 @@
   "ceo": "CEO dashboard",
   "ceoEdu": "My Centers",
 	"ceoNewEdu": "Create Center",
+  "error": "Centers not found.",
+  "heroTitle": "List of Educational Centers",
   "signIn": "Sign In",
   "signUp": "Sign Up",
   "register": {

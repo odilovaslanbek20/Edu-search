@@ -4,8 +4,11 @@ import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 
 function Products() {
+	const { t } = useTranslation()
 	const url = import.meta.env.VITE_API_URL
 	const { data, isLoading, error } = useGetHooks(`${url}/centers`)
 
@@ -83,70 +86,74 @@ function Products() {
 
 	return (
 		<section className='max-w-7xl mx-auto px-6 py-10 min-h-screen'>
-			<h1 className='text-4xl font-bold mb-12 text-center text-[#461773]'>
-				O'quv markazlar ro'yxati
+			<h1 className='text-4xl font-bold mb-12 max-[1024px]:mb-[30px] max-[600px]: text-center text-[#461773]'>
+				{t('heroTitle')}
 			</h1>
 
 			<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8'>
 				{data && data?.data?.length > 0 ? (
 					data?.data?.map((center: Center) => (
-						<Card
-							key={center.id}
-							className='relative border border-blue-200 shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden rounded-lg'
-						>
-							<Button
-								variant='ghost'
-								size='icon'
-								className='absolute top-3 right-3 text-2xl text-gray-400 hover:text-red-500 transition-colors duration-300'
+						<Link key={center.id} to={`/center/${center?.id}`}>
+							<Card
+								className='relative border border-blue-200 shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden rounded-lg'
 							>
-								<AiOutlineHeart />
-							</Button>
+								<Button
+									variant='ghost'
+									size='icon'
+									className='absolute top-3 right-3 text-2xl bg-[#c8c5c5] text-gray-400 hover:text-red-800 transition-colors duration-300'
+								>
+									<AiOutlineHeart />
+								</Button>
 
-							{center?.image && (
-								<img
-									src={center.image}
-									alt={center.name}
-									className='w-full h-[200px] object-cover mt-[-25px]'
-								/>
-							)}
+								{center?.image && (
+									<img
+										src={center.image}
+										alt={center.name}
+										className='w-full h-[200px] object-cover mt-[-25px]'
+									/>
+								)}
 
-							<CardHeader>
-								<CardTitle className='text-2xl font-semibold text-[#461773]'>
-									{center.name}
-								</CardTitle>
-							</CardHeader>
+								<CardHeader>
+									<CardTitle className='text-2xl font-semibold text-[#461773]'>
+										{center.name}
+									</CardTitle>
+								</CardHeader>
 
-							<CardContent className='space-y-2 text-sm text-muted-foreground'>
-								<div className='flex items-center gap-2'>
-									<span className='text-[#461773] font-semibold'>
-										📍 Hudud:
-									</span>
-									<span>{center.region?.name || "Noma'lum"}</span>
-								</div>
+								<CardContent className='space-y-2 text-sm text-muted-foreground'>
+									<div className='flex items-center gap-2'>
+										<span className='text-[#461773] font-semibold'>
+											📍 Hudud:
+										</span>
+										<span>{center.region?.name || "Noma'lum"}</span>
+									</div>
 
-								<div className='flex items-center gap-2'>
-									<span className='text-[#461773] font-semibold'>
-										📞 Telefon:
-									</span>
-									<span>{center.phone || "Ko'rsatilmagan"}</span>
-								</div>
+									<a
+										href={`tel:${center?.phone}`}
+										className='flex items-center gap-2'
+									>
+										<span className='text-[#461773] font-semibold'>
+											📞 Telefon:
+										</span>
+										<span>{center.phone || "Ko'rsatilmagan"}</span>
+									</a>
 
-								<div className='flex items-center gap-2'>
-									<span className='text-[#461773] font-semibold'>
-										👤 Mas'ul:
-									</span>
-									<span>
-										{center.user
-											? `${center.user.firstName} ${center.user.lastName}`
-											: "Noma'lum"}
-									</span>
-								</div>
-							</CardContent>
-						</Card>
+									<div className='flex items-center gap-2'>
+										<span className='text-[#461773] font-semibold'>
+											👤 Mas'ul:
+										</span>
+										<span>
+											{center.user
+												? `${center.user.firstName} ${center.user.lastName}`
+												: "Noma'lum"}
+										</span>
+									</div>
+								</CardContent>
+							</Card>
+						</Link>
 					))
 				) : (
 					<p className='text-center text-gray-500 col-span-full'>
-						Markazlar topilmadi.
+						{t('error')}
 					</p>
 				)}
 			</div>
