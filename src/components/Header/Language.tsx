@@ -48,7 +48,7 @@ const LanguageModal = () => {
 								<button
 									key={lang.code}
 									onClick={() => handleLanguageSelect(lang.code)}
-									className={`w-full px-4 py-2 text-sm text-left flex items-center gap-2 hover:bg-gray-100 transition ${
+									className={`w-full px-4 py-2 text-sm text-left flex items-center gap-2 hover:bg-gray-100 rounded-[9px] transition ${
 										i18n.language === lang.code
 											? 'bg-gray-100 font-semibold'
 											: ''

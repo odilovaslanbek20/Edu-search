@@ -1,15 +1,15 @@
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 
-const useGetHooks = (url: string) => {
-  return useQuery({
+function useGetHooks<T>(url: string) {
+	return useQuery({
 		queryKey: [url],
-		queryFn: async () => {
-			const res = await axios(url)
+		queryFn: async (): Promise<T> => {
+			const res = await axios.get<T>(url)
 			return res.data
 		},
 		staleTime: 5 * 60 * 1000,
-		refetchOnWindowFocus: false,
+		refetchOnWindowFocus: false, 
 	})
 }
 
