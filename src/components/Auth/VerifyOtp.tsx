@@ -9,15 +9,22 @@ import { useNavigate } from 'react-router-dom'
 function Otp() {
 	const url = import.meta.env.VITE_API_URL
 	const { response, loading, error, postData } = usePostHooks()
-	const [otp, setOtp] = useState(Array(5).fill(''))
+	const {
+		response: response1,
+		loading: loading1,
+		error: error1,
+		postData: postData1,
+	} = usePostHooks()
+
+	const [otpDigits, setOtpDigits] = useState(Array(5).fill(''))
 	const inputsRef = useRef<(HTMLInputElement | null)[]>([])
 	const navigate = useNavigate()
 
 	const handleChange = (index: number, value: string) => {
 		if (!/^[0-9]?$/.test(value)) return
-		const newOtp = [...otp]
+		const newOtp = [...otpDigits]
 		newOtp[index] = value
-		setOtp(newOtp)
+		setOtpDigits(newOtp)
 
 		if (value && index < 4) {
 			inputsRef.current[index + 1]?.focus()
@@ -28,19 +35,32 @@ function Otp() {
 		index: number,
 		e: React.KeyboardEvent<HTMLInputElement>
 	) => {
-		if (e.key === 'Backspace' && !otp[index] && index > 0) {
+		if (e.key === 'Backspace' && !otpDigits[index] && index > 0) {
 			inputsRef.current[index - 1]?.focus()
 		}
 	}
 
-	const email = localStorage.getItem('email')
+	const email = localStorage.getItem('email') || ''
+	const otp = otpDigits.join('')
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
-		const fullOtp = otp.join('')
+
 		await postData(
+			`${url}/users/verify-otp`,
+			{ email, otp },
+			{
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}
+		)
+	}
+
+	const sendOtp = async () => {
+		await postData1(
 			`${url}/users/send-otp`,
-			{ email, fullOtp },
+			{ email },
 			{
 				headers: {
 					'Content-Type': 'application/json',
@@ -53,9 +73,9 @@ function Otp() {
 		navigate('/login')
 	}
 
-	console.log(response)
+	console.log(response1);
 
-	if (loading) {
+	if (loading || loading1) {
 		return (
 			<div className='fixed w-full h-screen z-50 bg-[#fff]'>
 				<div className='flex justify-start mt-[50px] items-center h-screen flex-col'>
@@ -66,12 +86,12 @@ function Otp() {
 		)
 	}
 
-	if (error) {
+	if (error || error1) {
 		return (
 			<div className='fixed w-full h-screen bg-[#fff] z-50 px-[20px]'>
 				<div className='flex justify-center items-center h-[200px]'>
 					<div className='bg-red-100 text-red-700 px-4 py-2 rounded-md shadow-md'>
-						{error}
+						{error || error1}
 					</div>
 				</div>
 			</div>
@@ -98,7 +118,7 @@ function Otp() {
 							</Label>
 
 							<div className='flex justify-center gap-3 flex-wrap'>
-								{otp.map((digit, index) => (
+								{otpDigits.map((digit, index) => (
 									<Input
 										key={index}
 										type='text'
@@ -125,7 +145,10 @@ function Otp() {
 
 						<p className='text-center text-sm text-gray-600'>
 							Didn’t get the code?{' '}
-							<span className='text-[#4B0082] font-medium cursor-pointer hover:underline'>
+							<span
+								onClick={sendOtp}
+								className='text-[#4B0082] font-medium cursor-pointer hover:underline'
+							>
 								Resend
 							</span>
 						</p>

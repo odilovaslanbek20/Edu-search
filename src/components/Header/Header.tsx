@@ -7,7 +7,7 @@ import { FiMenu, FiX } from 'react-icons/fi'
 import { MdQueue } from 'react-icons/md'
 import CeoDropdown from './CeoPanel'
 import useGetHooks from '../Hooks/useGetHooks'
-import Admen from './User'
+import Admen from '../Profile/User'
 
 type User = {
 	id: number

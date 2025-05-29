@@ -74,6 +74,7 @@ function Register() {
 
 			sendOtp()
 		}
+		localStorage.setItem('email', email)
 	}, [email, postData1, response, url])
 
 	if (response1) {

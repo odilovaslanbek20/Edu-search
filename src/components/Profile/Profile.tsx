@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import useGetHooks from '../Hooks/useGetHooks'
-import { Skeleton } from "@/components/ui/skeleton" 
+import { Skeleton } from '@/components/ui/skeleton'
+import { useDelete } from '../Hooks/useDeleteHooks'
 
 interface User {
+	id: number,
 	firstName: string
 	lastName: string
 	email: string
@@ -17,38 +19,53 @@ export default function Profile() {
 	const url = import.meta.env.VITE_API_URL
 	const token = localStorage.getItem('accessToken')
 
-	const { data, isLoading, error } = useGetHooks<{ data: User }>(`${url}/users/mydata`, {
-		headers: {
-			Authorization: `Bearer ${token}`,
-			Accept: 'application/json',
-		},
-	})
+	const { data, isLoading, error } = useGetHooks<{ data: User }>(
+		`${url}/users/mydata`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`,
+				Accept: 'application/json',
+			},
+		}
+	)
+
+	const {deleteItem, loading, error: error1, success} = useDelete()
 
 	const user = data?.data
 
-	if (isLoading) {
+	const deleteUser = async () => {
+		await deleteItem(`${url}/users/${user?.id}`)
+		localStorage.clear()
+		navigate('/')
+		window.location.reload()
+	}
+
+	console.log(success);
+
+	if (isLoading || loading) {
 		return (
-			<div className="max-w-2xl mx-auto mt-12 px-6 space-y-8 animate-pulse">
-				<div className="flex flex-col items-center space-y-4">
-					<Skeleton className="w-28 h-28 rounded-full" />
-					<Skeleton className="w-1/2 h-8" />
-					<Skeleton className="w-2/3 h-4" />
+			<div className='max-w-2xl mx-auto mt-12 px-6 space-y-8 animate-pulse'>
+				<div className='flex flex-col items-center space-y-4'>
+					<Skeleton className='w-28 h-28 rounded-full' />
+					<Skeleton className='w-1/2 h-8' />
+					<Skeleton className='w-2/3 h-4' />
 				</div>
-				<div className="rounded-lg border p-8 space-y-4">
+				<div className='rounded-lg border p-8 space-y-4'>
 					{[...Array(5)].map((_, idx) => (
-						<Skeleton key={idx} className="w-full h-6" />
+						<Skeleton key={idx} className='w-full h-6' />
 					))}
 				</div>
 			</div>
 		)
 	}
 
-	if (error)
+	if (error || error1) {
 		return (
 			<div className='text-sm text-destructive text-center mt-10'>
 				Foydalanuvchi topilmadi.
 			</div>
 		)
+	}
 
 	if (!user) return null
 
@@ -88,7 +105,7 @@ export default function Profile() {
 				</Button>
 				<Button
 					variant='destructive'
-					onClick={() => console.log("Accountni o'chirish")}
+					onClick={deleteUser}
 				>
 					Accountni o'chirish
 				</Button>

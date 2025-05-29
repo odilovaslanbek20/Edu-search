@@ -37,8 +37,8 @@ export default function Admen() {
 
 	const user = data?.data as User
 
-  if (isLoading) return <div className='text-sm text-muted-foreground'>Yuklanmoqda...</div>
-  if (error) return <div className='text-sm text-destructive'>Foydalanuvchi topilmadi.</div>
+  console.log(isLoading);
+  console.log(error);
 
   return (
     <div className='flex justify-end w-full'>
@@ -49,18 +49,18 @@ export default function Admen() {
             className='flex items-center max-[500px]:w-[30px] max-[500px]:h-[30px] gap-[8px] p-0 rounded-[50px] pr-[7px] max-[768px]:p-0'
           >
             <Avatar className='w-10 h-10 max-[500px]:w-[30px] max-[500px]:h-[30px] border border-transparent shadow-none ml-[-1.5px] max-[768px]:m-0'>
-              <AvatarImage src={user.image} alt='User avatar' />
+              <AvatarImage src={user?.image} alt='User avatar' />
               <AvatarFallback className='uppercase text-sm tracking-wide bg-[#D9D9D9] text-black'>
-                {user.firstName?.[0]}
-                {user.lastName?.[0]}
+                {user?.firstName?.[0]}
+                {user?.lastName?.[0]}
               </AvatarFallback>
             </Avatar>
             <div className='hidden md:flex flex-col items-start'>
               <span className='text-sm font-semibold text-[#333] dark:text-[#F4F4F4]'>
-                {user.firstName} {user.lastName}
+                {user?.firstName} {user?.lastName}
               </span>
               <span className='text-xs text-[#666] dark:text-[#AAA] truncate max-w-[160px] line-clamp-1'>
-                {user.email}
+                {user?.email}
               </span>
             </div>
           </Button>
@@ -75,9 +75,9 @@ export default function Admen() {
           <DropdownMenuLabel className='px-5 py-4'>
             <div className='flex flex-col gap-1'>
               <p className='text-base font-bold'>
-                {user.firstName} {user.lastName}
+                {user?.firstName} {user?.lastName}
               </p>
-              <p className='text-xs text-[#666] dark:text-[#AAA]'>{user.email}</p>
+              <p className='text-xs text-[#666] dark:text-[#AAA]'>{user?.email}</p>
             </div>
           </DropdownMenuLabel>
 
