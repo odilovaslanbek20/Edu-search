@@ -58,7 +58,6 @@ const CeoDropdown = () => {
     );
   }
 
-  // Desktop version
   return (
     <div className="relative inline-block">
       <DropdownMenu open={open} onOpenChange={setOpen}>

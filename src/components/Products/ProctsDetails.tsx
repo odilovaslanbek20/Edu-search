@@ -4,7 +4,6 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 
-// Tiplar
 type User = {
 	id: string
 	firstName: string

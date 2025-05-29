@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import useGetHooks from '../Hooks/useGetHooks'
-import { Skeleton } from "@/components/ui/skeleton" // Agar yo‘q bo‘lsa, ShadCN Skeleton qo‘shish kerak
+import { Skeleton } from "@/components/ui/skeleton" 
 
 interface User {
 	firstName: string
