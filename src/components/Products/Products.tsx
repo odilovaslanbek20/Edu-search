@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 function Products() {
 	const { t } = useTranslation()
 	const url = import.meta.env.VITE_API_URL
-	const { data, isLoading, error } = useGetHooks<Center[]>(`${url}/centers`)
+	const { data, isLoading, error } = useGetHooks<{ data: Center[] }>(`${url}/centers`)
 
 	type Major = {
 		id: number
@@ -84,7 +84,10 @@ function Products() {
 		)
 	}
 
-	const centerData: Center[] | undefined = data
+	console.log(data);
+	
+
+const centerData: Center[] | undefined = data?.data
 
 	return (
 		<section className='max-w-7xl mx-auto px-6 py-10 min-h-screen'>
