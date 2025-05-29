@@ -12,6 +12,8 @@
   "error": "Centers not found.",
   "heroTitle": "List of Educational Centers",
   "learnMore": "Learn more...",
+  "editProfile": "Edit Profile",
+  "logout": "Log Out",
   "signIn": "Sign In",
   "signUp": "Sign Up",
   "register": {

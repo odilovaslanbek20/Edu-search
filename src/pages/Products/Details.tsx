@@ -1,9 +1,13 @@
+import Header from '@/components/Header/Header'
 import ProductsDetails from '@/components/Products/ProctsDetails'
 
 function ProductsDetailsPage() {
 	return (
 		<>
-		 <ProductsDetails/>
+		 <Header/>
+		 <main className='pt-[30px]'>
+			<ProductsDetails/>
+		 </main>
 		</>
 	)
 }

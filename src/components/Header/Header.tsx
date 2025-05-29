@@ -7,6 +7,7 @@ import { FiMenu, FiX } from 'react-icons/fi'
 import { MdQueue } from 'react-icons/md'
 import CeoDropdown from './CeoPanel'
 import useGetHooks from '../Hooks/useGetHooks'
+import Admen from './User'
 
 type User = {
 	id: number
@@ -119,23 +120,32 @@ function Header() {
 					)}
 				</nav>
 
-				<div className='flex items-center gap-[15px]'>
+				<div className='flex items-center gap-[15px] '>
 					<LanguageModal />
 
-					<Link to='/login'>
-						<p className='text-gray-600 hover:text-[#fff] hover:bg-[#461773] border border-[#461773] rounded-lg transition-all duration-500 px-4 py-[7px] font-medium max-[880px]:hidden'>
-							{t('signIn')}
-						</p>
-					</Link>
+					{!token ? (
+						<>
+							<Link to='/login'>
+								<p className='text-gray-600 hover:text-[#fff] hover:bg-[#461773] border border-[#461773] rounded-lg transition-all duration-500 px-4 py-[7px] font-medium max-[880px]:hidden'>
+									{t('signIn')}
+								</p>
+							</Link>
 
-					<Link to='/register'>
-						<p className='text-white bg-[#461773] px-4 py-2 rounded-lg hover:opacity-90 transition cursor-pointer max-[880px]:hidden'>
-							{t('signUp')}
-						</p>
-					</Link>
+							<Link to='/register'>
+								<p className='text-white bg-[#461773] px-4 py-2 rounded-lg hover:opacity-90 transition cursor-pointer max-[880px]:hidden'>
+									{t('signUp')}
+								</p>
+							</Link>
+						</>
+					) : (
+						<>
+							<Admen />
+						</>
+					)}
+
 					<div
 						onClick={toggleMenu}
-						className={`min-[1330px]:hidden flex items-center justify-center text-gray-600 bg-transparent transition-all duration-300 rounded-lg
+						className={`min-[1330px]:hidden flex items-center justify-center text-gray-600 bg-transparent transition-all duration-300 rounded-lg cursor-pointer
     ${menuOpen ? 'hidden' : 'block'} 
     min-[750px]:border min-[750px]:border-[#461773] min-[750px]:px-[10px] min-[750px]:py-[7px]`}
 					>
@@ -153,70 +163,80 @@ function Header() {
 			></div>
 
 			<div
-				className={`min-[1330px]:hidden fixed top-0 ${
+				className={`min-[1330px]:hidden fixed top-0 pb-[30px] ${
 					menuOpen ? 'max-[1330px]:left-0' : 'max-[1330px]:left-[-100%]'
-				} w-[280px] h-full bg-white shadow-lg z-50 p-6 flex flex-col gap-5 transition-all duration-500`}
+				} w-[280px] h-full bg-white shadow-lg z-50 p-6 flex flex-col justify-between transition-all duration-500`}
 			>
-				<div className='flex items-center justify-between'>
-					<Link to='/'>
-						<img
-							className='w-[130px]'
-							src='/logo-iS1ZmJmJ.png'
-							alt='web logo'
-						/>
+				<div className='flex flex-col gap-5'>
+					<div className='flex items-center justify-between'>
+						<Link to='/'>
+							<img
+								className='w-[130px]'
+								src='/logo-iS1ZmJmJ.png'
+								alt='web logo'
+							/>
+						</Link>
+						<div className='cursor-pointer'>
+							<FiX onClick={toggleMenu} className='text-[25px]' />
+						</div>
+					</div>
+
+					<Link to='/' className='text-[18px] font-semibold text-[#461773]'>
+						{t('home')}
+					</Link>
+					<Link to='#' className='text-[18px] font-semibold text-gray-600'>
+						{t('about')}
+					</Link>
+					<Link to='#' className='text-[18px] font-semibold text-gray-600'>
+						{t('reuses')}
+					</Link>
+					<Link
+						to='#'
+						className='text-[18px] font-semibold text-gray-600 flex items-center gap-2'
+					>
+						<GoHeart className='text-lg' />
+						{t('like')}
 					</Link>
 
-					<div className='cursor-pointer'>
-						<FiX onClick={toggleMenu} className='text-[25px]' />
-					</div>
+					{token ? (
+						<>
+							<Link
+								to='#'
+								className='text-gray-600 hover:text-[#461773] font-medium flex items-center gap-2 relative group transition-colors duration-300'
+							>
+								<MdQueue />
+								{t('queue')}
+							</Link>
+
+							{data && ceoUser === 'CEO' ? <CeoDropdown /> : null}
+						</>
+					) : (
+						<>
+							<hr />
+							<Link
+								to='/login'
+								className='text-gray-600 border border-[#461773] px-4 py-[7px] rounded-lg transition-all hidden max-[880px]:block'
+							>
+								{t('signIn')}
+							</Link>
+							<Link
+								to='/register'
+								className='text-white bg-[#461773] px-4 py-[9px] rounded-lg transition-all hidden max-[880px]:block'
+							>
+								{t('signUp')}
+							</Link>
+						</>
+					)}
 				</div>
 
-				<Link to='/' className='text-[18px] font-semibold text-[#461773]'>
-					{t('home')}
-				</Link>
-				<Link to='#' className='text-[18px] font-semibold text-gray-600'>
-					{t('about')}
-				</Link>
-				<Link to='#' className='text-[18px] font-semibold text-gray-600'>
-					{t('reuses')}
-				</Link>
-				<Link
-					to='#'
-					className='text-[18px] font-semibold text-gray-600 flex items-center gap-2'
-				>
-					<GoHeart className='text-lg' />
-					{t('like')}
-				</Link>
-
-				<div className='min-[600px]:hidden'>
-					<CeoDropdown />
-				</div>
-
-				<hr />
-
-				<Link
-					to='/login'
-					className='text-gray-600 border border-[#461773] px-4 py-[7px] rounded-lg transition-all hidden max-[880px]:block'
-				>
-					{t('signIn')}
-				</Link>
-				<Link
-					to='/register'
-					className='text-white bg-[#461773] px-4 py-[9px] rounded-lg transition-all hidden max-[880px]:block'
-				>
-					{t('signUp')}
-				</Link>
-
-				<div className='absolute top-full left-0 w-full bg-yellow-100 text-yellow-800 p-2 text-center text-sm'>
+				<div className='mt-6 bg-yellow-100 text-yellow-800 p-2 text-center text-sm rounded-md'>
 					{isLoading && <p>Ma'lumotlar yuklanmoqda...</p>}
 					{error && (
-						<p>
-							Xatolik yuz berdi: {(error)?.message || "Noma'lum xatolik"}
-						</p>
+						<p>Xatolik yuz berdi: {error?.message || "Noma'lum xatolik"}</p>
 					)}
 					{!isLoading && !error && user && (
 						<p>
-							Foydalanuvchi roli: <strong>{user.role}</strong>
+							Foydalanuvchi roli: <strong>{user?.role}</strong>
 						</p>
 					)}
 					{!token && <p>Tizimga kiritilmagan</p>}

@@ -1,3 +1,6 @@
+import gbFlag from '@/assets/flags/gb.svg'
+import ruFlag from '@/assets/flags/ru.svg'
+import uzFlag from '@/assets/flags/uz.svg'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -7,12 +10,13 @@ const LanguageModal = () => {
 	const [open, setOpen] = useState(false)
 
 	const languages = [
-		{ code: 'uz', label: 'UZ', flag: 'uz.svg' },
-		{ code: 'ru', label: 'RU', flag: 'ru.svg' },
-		{ code: 'en', label: 'EN', flag: 'gb.svg' },
+		{ code: 'uz', label: 'UZ', flag: uzFlag },
+		{ code: 'ru', label: 'RU', flag: ruFlag },
+		{ code: 'en', label: 'EN', flag: gbFlag },
 	]
-	
-	const currentLang = languages.find(lang => lang.code === i18n.language) || languages[0]
+
+	const currentLang =
+		languages.find(lang => lang.code === i18n.language) || languages[0]
 
 	const handleLanguageSelect = (code: string) => {
 		i18n.changeLanguage(code)
@@ -55,8 +59,8 @@ const LanguageModal = () => {
 									}`}
 								>
 									<img
-										src={lang.flag}
-										alt={lang.label}
+										src={lang?.flag}
+										alt={lang?.label}
 										className='w-5 rounded-full'
 									/>
 									{lang.label}
