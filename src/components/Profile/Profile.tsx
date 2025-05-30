@@ -4,6 +4,7 @@ import useGetHooks from '../Hooks/useGetHooks'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useDelete } from '../Hooks/useDeleteHooks'
 import { useTranslation } from 'react-i18next'
+import EditModal from './EditModal'
 
 interface User {
 	id: number
@@ -98,9 +99,7 @@ export default function Profile() {
 				<Button className='cursor-pointer' variant='outline' onClick={() => navigate('/')}>
 					← {t('profile.back')}
 				</Button>
-				<Button onClick={() => navigate('/profile/edit')} className='bg-[#461773] hover:bg-[#461773]/80 cursor-pointer'>
-					📝 {t('profile.edit')}
-				</Button>
+					<EditModal/>
 				<Button
 					variant='destructive'
 					onClick={deleteUser}
