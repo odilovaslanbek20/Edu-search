@@ -9,7 +9,7 @@ import {
 function Footer() {
 	const { t } = useTranslation()
   return (
-    <footer className="w-full bg-gradient-to-b from-[#4b0f8d] to-[#2d095b] text-white py-12 mt-20">
+    <footer className="w-full bg-gradient-to-b from-[#4b0f8d] to-[#2d095b] text-white py-12">
       <div className="w-[90%] md:w-[80%] mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
         <div>
           <h2 className="text-3xl font-bold mb-4 tracking-wide">Findedu.uz</h2>

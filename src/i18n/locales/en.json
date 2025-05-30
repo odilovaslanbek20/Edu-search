@@ -91,5 +91,47 @@
 			"dizayn": "Design",
 			"biznes": "Business"
 		}
+	},
+	"hero": {
+	  "title": "Take your first step toward education",
+	  "subtitle": "Start growing in your career with quality content and helpful tools.",
+	  "button": "Post an ad..."
+	},
+	"elon": {
+		"title": "Advertisement Posting Procedure",
+		"desc1": "To post an advertisement on our platform, you must first",
+		"desc2": "register",
+		"desc3": "and select your role as",
+		"desc4": "Director",
+		"desc5": ".",
+		"desc6": "You can post advertisements based on the following plans:",
+
+		"plan1": "Basic",
+		"plan1_price": "Price: 0 UZS",
+		"plan1_feature1": "Post 1 advertisement",
+		"plan1_feature2": "Moderation 2–3 days",
+		"plan1_feature3": "No advertisements shown",
+		"plan1_feature4": "Limited statistical data",
+
+		"plan2": "Standard",
+		"plan2_price": "Price: 50,000 UZS",
+		"plan2_feature1": "Post up to 3 advertisements",
+		"plan2_feature2": "Moderation 1 day",
+		"plan2_feature3": "Shown on the homepage",
+		"plan2_feature4": "Basic analytics",
+
+		"plan3": "Premium",
+		"plan3_price": "Price: 150,000 UZS",
+		"plan3_feature1": "Unlimited advertisements",
+		"plan3_feature2": "Fast moderation (within 3 hours)",
+		"plan3_feature3": "Displayed on advertisement banner",
+		"plan3_feature4": "Complete statistical analysis",
+		"plan3_feature5": "Priority support",
+
+		"note_title": "Note:",
+		"note1": "Only users with the CEO role can post advertisements.",
+		"note2": "Advertisements are shown after moderation.",
+		"note3": "Relevant features are activated after payment.",
+		"back": "← Go back"
 	}
 }

@@ -91,5 +91,47 @@
 			"dizayn": "Dizayn",
 			"biznes": "Biznes"
 		}
+	},
+	"hero": {
+	  "title": "Ta’lim sari birinchi qadamingizni tashlang",
+	  "subtitle": "Sifatli kontent va foydali vositalar yordamida kasbingizda o‘sishni boshlang.",
+	  "button": "Elon berish..."
+	},
+	"elon": {
+		"title": "E’lon berish tartibi",
+		"desc1": "Bizning platformamizda e’lon joylashtirish uchun siz avval",
+		"desc2": "registratsiyadan o‘tishingiz",
+		"desc3": "va rolingizni",
+		"desc4": "Direktor",
+		"desc5": "sifatida tanlashingiz kerak.",
+		"desc6": "Quyidagi tariflar asosida e’lon joylashtirishingiz mumkin:",
+
+		"plan1": "Boshlang‘ich",
+		"plan1_price": "Narxi: 0 so‘m",
+		"plan1_feature1": "1 ta e’lon joylashtirish",
+		"plan1_feature2": "Moderatsiya 2–3 kun",
+		"plan1_feature3": "Reklamasiz ko‘rinish",
+		"plan1_feature4": "Cheklangan statistik ma’lumotlar",
+
+		"plan2": "Standart",
+		"plan2_price": "Narxi: 50,000 so‘m",
+		"plan2_feature1": "3 tagacha e’lon joylashtirish",
+		"plan2_feature2": "Moderatsiya 1 kun",
+		"plan2_feature3": "Bosh sahifada ko‘rinadi",
+		"plan2_feature4": "Oddiy analitika",
+
+		"plan3": "Premium",
+		"plan3_price": "Narxi: 150,000 so‘m",
+		"plan3_feature1": "Cheksiz e’lonlar",
+		"plan3_feature2": "Tezkor moderatsiya (3 soat ichida)",
+		"plan3_feature3": "Reklama bannerida chiqadi",
+		"plan3_feature4": "To‘liq statistik tahlil",
+		"plan3_feature5": "Prioritet qo‘llab-quvvatlash",
+
+		"note_title": "Eslatma:",
+		"note1": "Faqat CEO rolidagi foydalanuvchilar e’lon bera oladi.",
+		"note2": "E’lonlar moderatsiyadan so‘ng ko‘rsatiladi.",
+		"note3": "To‘lov amalga oshirilgach tegishli funksiyalar faollashadi.",
+		"back": "← Ortga qaytish"
 	}
 }

@@ -7,6 +7,7 @@ import ProductsDetailsPage from './pages/Products/Details'
 import ProfilePage from './pages/Profile/Profile'
 import Footer from './components/Footer/Footer'
 import CeoCreate from './pages/Ceo/CeoCreate'
+import ElonPage from './pages/Elon/Elon'
 
 function App() {
 	return (
@@ -19,6 +20,7 @@ function App() {
 				<Route path='/otp' element={<OtpPage />} />
 				<Route path='/center/:id' element={<ProductsDetailsPage />} />
 				<Route path='/ceo' element={<CeoCreate />} />
+				<Route path='/elon' element={<ElonPage />} />
 			</Routes>
 			<Footer/>
 		</>
