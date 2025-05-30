@@ -63,7 +63,33 @@
 		"title": "Your Profile",
 		"text": "Here you can view and manage your personal information.",
 		"not_found": "User not found.",
-    "saqlash": "Save",
-    "loading": "Loading..."
+		"saqlash": "Save",
+		"loading": "Loading..."
+	},
+	"footer": {
+		"copyright": "2025 Findedu. All rights reserved.",
+		"copyright1": "Developed by Odilov Aslanbek.",
+
+		"social": "Social Media",
+		"category": {
+			"title": "Categories",
+			"all": "Home",
+			"education": "Education Centers",
+			"bio": "About Us",
+			"contact": "Contact",
+			"tavsiv": "Reviews",
+			"project": "Projects"
+		},
+		"direction": {
+			"title": "Directions",
+			"it": "IT",
+			"matematika": "Mathematics",
+			"marketing": "Marketing",
+			"sat": "SAT",
+			"ingliz_tili": "English",
+			"smm": "SMM",
+			"dizayn": "Design",
+			"biznes": "Business"
+		}
 	}
 }

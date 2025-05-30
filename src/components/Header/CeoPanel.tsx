@@ -46,7 +46,7 @@ const CeoDropdown = () => {
               <span>{t("ceoEdu")}</span>
             </button>
             <button
-              onClick={() => (window.location.href = "/create-center")}
+              onClick={() => window.location.href = "/ceo"}
               className="w-full flex items-center gap-2 px-2 py-2 rounded hover:bg-muted transition text-left"
             >
               <HiOutlinePlusCircle className="text-lg" />
@@ -72,7 +72,7 @@ const CeoDropdown = () => {
             <HiOutlineBuildingLibrary className="text-lg" />
             <span>{t("ceoEdu")}</span>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => (window.location.href = "/create-center")} className="flex items-center gap-2">
+          <DropdownMenuItem onClick={() => (window.location.href = "/ceo")} className="flex items-center gap-2">
             <HiOutlinePlusCircle className="text-lg" />
             <span>{t("ceoNewEdu")}</span>
           </DropdownMenuItem>

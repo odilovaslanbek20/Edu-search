@@ -5,6 +5,8 @@ import LoginPage from './pages/Auth/Login'
 import OtpPage from './pages/Auth/Auth'
 import ProductsDetailsPage from './pages/Products/Details'
 import ProfilePage from './pages/Profile/Profile'
+import Footer from './components/Footer/Footer'
+import CeoCreate from './pages/Ceo/CeoCreate'
 
 function App() {
 	return (
@@ -16,7 +18,9 @@ function App() {
 				<Route path='/login' element={<LoginPage />} />
 				<Route path='/otp' element={<OtpPage />} />
 				<Route path='/center/:id' element={<ProductsDetailsPage />} />
+				<Route path='/ceo' element={<CeoCreate />} />
 			</Routes>
+			<Footer/>
 		</>
 	)
 }

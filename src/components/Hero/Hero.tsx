@@ -1,9 +1,11 @@
+import HeroSwiper from './HeroSwiper'
+
 function Hero() {
 	return (
 		<>
-		 <section className='w-[80%] m-auto'>
-			 
-		 </section>
+			<section className='py-[50px]'>
+				<HeroSwiper />
+			</section>
 		</>
 	)
 }

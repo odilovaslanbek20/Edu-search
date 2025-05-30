@@ -66,5 +66,30 @@
 		"not_found": "Foydalanuvchi topilmadi.",
 		"saqlash": "Saqlash",
 		"loading": "Yuklanmoqda..."
+	},
+	"footer": {
+		"copyright": "2025 Findedu. Barcha huquqlar himoyalangan.",
+		"copyright1": "Dastur Odilov Aslanbek tomonidan ishlab chiqilgan.",
+		"social": "Ijtimoiy tarmoqlar",
+		"category": {
+			"title": "Bolimlar",
+			"all": "Bosh sahifa",
+			"education": "O'quv markazlar",
+			"bio": "Biz haqimizda",
+			"contact": "Aloqa",
+			"tavsiv": "Sharhlar",
+			"project": "Loyhalar"
+		},
+		"direction": {
+			"title": "Yo‘nalishlar",
+			"it": "IT",
+			"matematika": "Matematika",
+			"marketing": "Marketing",
+			"sat": "SAT",
+			"inglizTili": "Ingliz tili",
+			"smm": "SMM",
+			"dizayn": "Dizayn",
+			"biznes": "Biznes"
+		}
 	}
 }
