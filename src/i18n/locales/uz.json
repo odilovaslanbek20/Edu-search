@@ -51,5 +51,18 @@
 		"button": "Kirish",
 		"no_account": "Hisobingiz yo‘qmi?",
 		"register": "Ro‘yxatdan o‘tish"
+	},
+	"profile": {
+		"firstname": "Ism",
+		"lastname": "Familiya",
+		"email": "Elektron pochta",
+		"phone": "Telefon",
+		"role": "Rol",
+		"back": "Ortga",
+		"edit": "Profilni tahrirlash",
+		"delete": "Hisobni o‘chirish",
+		"title": "Profilingiz",
+		"text": "Bu yerda siz shaxsiy ma'lumotlaringizni ko‘rishingiz va boshqarishingiz mumkin.",
+		"not_found": "Foydalanuvchi topilmadi."
 	}
 }
