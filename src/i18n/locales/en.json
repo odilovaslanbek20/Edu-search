@@ -62,6 +62,8 @@
 		"delete": "Delete Account",
 		"title": "Your Profile",
 		"text": "Here you can view and manage your personal information.",
-		"not_found": "User not found."
+		"not_found": "User not found.",
+    "saqlash": "Save",
+    "loading": "Loading..."
 	}
 }

@@ -89,12 +89,12 @@ function EditModal() {
 
 			<DialogContent className='sm:max-w-[500px]'>
 				<DialogHeader>
-					<DialogTitle>Profilni tahrirlash</DialogTitle>
+					<DialogTitle>{t("profile.edit")}</DialogTitle>
 				</DialogHeader>
 
 				<div className='grid gap-4 py-4'>
 					<div className='grid gap-2'>
-						<Label htmlFor='firstName'>Ism</Label>
+						<Label htmlFor='firstName'>{t("profile.firstname")}</Label>
 						<Input
 							id='firstName'
 							name='firstName'
@@ -105,7 +105,7 @@ function EditModal() {
 					</div>
 
 					<div className='grid gap-2'>
-						<Label htmlFor='lastName'>Familiya</Label>
+						<Label htmlFor='lastName'>{t("profile.lastname")}</Label>
 						<Input
 							id='lastName'
 							name='lastName'
@@ -116,7 +116,7 @@ function EditModal() {
 					</div>
 
 					<div className='grid gap-2'>
-						<Label htmlFor='phone'>Telefon</Label>
+						<Label htmlFor='phone'>{t("profile.phone")}</Label>
 						<Input
 							id='phone'
 							name='phone'
@@ -134,7 +134,7 @@ function EditModal() {
 						disabled={loading}
 						className='bg-[#461773] hover:bg-[#5c1c90] transition'
 					>
-						{loading ? 'Saqlanmoqda...' : 'Saqlash'}
+						{loading ? `${t("profile.loading")}` : `${t("profile.saqlash")}`}
 					</Button>
 				</DialogFooter>
 			</DialogContent>

@@ -63,6 +63,8 @@
 		"delete": "Hisobni o‘chirish",
 		"title": "Profilingiz",
 		"text": "Bu yerda siz shaxsiy ma'lumotlaringizni ko‘rishingiz va boshqarishingiz mumkin.",
-		"not_found": "Foydalanuvchi topilmadi."
+		"not_found": "Foydalanuvchi topilmadi.",
+		"saqlash": "Saqlash",
+		"loading": "Yuklanmoqda..."
 	}
 }
