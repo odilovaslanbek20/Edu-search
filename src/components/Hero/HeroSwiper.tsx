@@ -1,26 +1,46 @@
-import { EffectCards } from 'swiper/modules'
+import { Autoplay, EffectCards } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import './swiper/css/css.css'
 import './swiper/css/effect-cards.css'
+import useGetHooks from '../Hooks/useGetHooks'
+
+type Center = {
+	data: {
+		id: number
+		name: string
+		image: string
+	}[]
+}
 
 export default function HeroSwiper() {
+	const url = import.meta.env.VITE_API_URL
+	const {data, isLoading, error} = useGetHooks<Center>(`${url}/centers`)
+
+	if (isLoading) return <p>Loading...</p>
+	if (error) return <p>Error: {error.message}</p>
+
+	const center = data?.data
+
 	return (
 		<Swiper
 			effect='cards'
 			grabCursor={true}
-			modules={[EffectCards]}
+			modules={[EffectCards, Autoplay]}
 			className='mySwiper'
+			loop={true}
+			autoplay={{
+				delay: 2500,
+				disableOnInteraction: false,
+			}}
 		>
-			<SwiperSlide>Slide 1</SwiperSlide>
-			<SwiperSlide>Slide 2</SwiperSlide>
-			<SwiperSlide>Slide 3</SwiperSlide>
-			<SwiperSlide>Slide 4</SwiperSlide>
-			<SwiperSlide>Slide 5</SwiperSlide>
-			<SwiperSlide>Slide 6</SwiperSlide>
-			<SwiperSlide>Slide 7</SwiperSlide>
-			<SwiperSlide>Slide 8</SwiperSlide>
-			<SwiperSlide>Slide 9</SwiperSlide>
+			{center?.map(data => (
+				<SwiperSlide className='group flex-col' key={data?.id}>
+					<img className='h-full bg-contain' src={data?.image} alt={data?.name} />
+          <div className="opacity-0 group-hover:opacity-100 transition-all duration-500 fixed w-full h-full bg-[#000]/50"></div>
+					<p className='font-["Playwrite_HU"] absolute opacity-0 group-hover:opacity-100 transition-all duration-500 text-center px-[20px]'>{data?.name}</p>
+				</SwiperSlide>
+			))}
 		</Swiper>
 	)
 }
