@@ -15,20 +15,20 @@ import useGetHooks from '../Hooks/useGetHooks'
 import { useTranslation } from 'react-i18next'
 
 type ApiResponse<T> = {
-  data: T
+	data: T
 }
-
 
 type User = {
 	id: number
 	firstName: string
 	lastName: string
+	image: string
 	phone?: string
 }
 
 function EditModal() {
 	const { t } = useTranslation()
-	const token = localStorage.getItem("accessToken")
+	const token = localStorage.getItem('accessToken')
 	const url = import.meta.env.VITE_API_URL
 
 	const { putData, response, loading, error } = usePutData()
@@ -44,10 +44,16 @@ function EditModal() {
 	})
 
 	const [open, setOpen] = useState(false)
-	const [formData, setFormData] = useState({
-		firstName: data?.data?.firstName,
-		lastName: data?.data?.lastName,
-		phone: data?.data?.phone,
+	const [formData, setFormData] = useState<{
+		firstName: string
+		lastName: string
+		phone?: string
+		image?: string 
+	}>({
+		firstName: data?.data?.firstName || '',
+		lastName: data?.data?.lastName || '',
+		phone: data?.data?.phone || '',
+		image: undefined,
 	})
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,17 +63,20 @@ function EditModal() {
 	const id = data?.data?.id
 
 	const handleSubmit = async () => {
-		if (!token) {
-			console.error('Token topilmadi')
-			return
-		}
-		if (!id) {
-			console.error('Foydalanuvchi id topilmadi')
-			return
-		}
+		if (!token) return console.error('Token topilmadi')
+		if (!id) return console.error('Foydalanuvchi id topilmadi')
 
 		try {
-			await putData(`${url}/users/${id}`, formData, token)
+			const form = new FormData()
+			form.append('firstName', formData.firstName)
+			form.append('lastName', formData.lastName)
+			if (formData.phone) form.append('phone', formData.phone)
+			if (formData.image) {
+				form.append('image', formData.image)
+			}
+
+			await putData(`${url}/users/${id}`, form, token)
+
 			setOpen(false)
 			window.location.reload()
 		} catch (error) {
@@ -82,19 +91,22 @@ function EditModal() {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button variant='outline' className='bg-[#461773] text-[#fff] hover:bg-[#461773]/80 cursor-pointer hover:text-[#fff] border-none'>
+				<Button
+					variant='outline'
+					className='bg-[#461773] text-[#fff] hover:bg-[#461773]/80 cursor-pointer hover:text-[#fff] border-none'
+				>
 					📝 {t('profile.edit')}
 				</Button>
 			</DialogTrigger>
 
 			<DialogContent className='sm:max-w-[500px]'>
 				<DialogHeader>
-					<DialogTitle>{t("profile.edit")}</DialogTitle>
+					<DialogTitle>{t('profile.edit')}</DialogTitle>
 				</DialogHeader>
 
 				<div className='grid gap-4 py-4'>
 					<div className='grid gap-2'>
-						<Label htmlFor='firstName'>{t("profile.firstname")}</Label>
+						<Label htmlFor='firstName'>{t('profile.firstname')}</Label>
 						<Input
 							id='firstName'
 							name='firstName'
@@ -105,7 +117,7 @@ function EditModal() {
 					</div>
 
 					<div className='grid gap-2'>
-						<Label htmlFor='lastName'>{t("profile.lastname")}</Label>
+						<Label htmlFor='lastName'>{t('profile.lastname')}</Label>
 						<Input
 							id='lastName'
 							name='lastName'
@@ -116,7 +128,7 @@ function EditModal() {
 					</div>
 
 					<div className='grid gap-2'>
-						<Label htmlFor='phone'>{t("profile.phone")}</Label>
+						<Label htmlFor='phone'>{t('profile.phone')}</Label>
 						<Input
 							id='phone'
 							name='phone'
@@ -124,6 +136,21 @@ function EditModal() {
 							placeholder={data?.data?.phone}
 							value={formData?.phone}
 							onChange={handleChange}
+						/>
+					</div>
+
+					<div className='flex flex-col gap-1 col-span-1'>
+						<Label htmlFor='image'>{t('register.image')}</Label>
+						<Input
+							id='image'
+							type='file'
+							accept='image/*'
+							onChange={e => {
+								if (e.target.files && e.target.files[0]) {
+									setFormData({ ...formData, image: e.target.value})
+								}
+							}}
+							className='bg-white/60 border border-white/30 w-full'
 						/>
 					</div>
 				</div>
@@ -134,7 +161,7 @@ function EditModal() {
 						disabled={loading}
 						className='bg-[#461773] hover:bg-[#5c1c90] transition'
 					>
-						{loading ? `${t("profile.loading")}` : `${t("profile.saqlash")}`}
+						{loading ? `${t('profile.loading')}` : `${t('profile.saqlash')}`}
 					</Button>
 				</DialogFooter>
 			</DialogContent>
