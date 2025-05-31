@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { GoHeart } from 'react-icons/go'
 import { useEffect, useState } from 'react'
 import LanguageModal from './Language'
@@ -19,6 +19,7 @@ type User = {
 function Header() {
 	const url = import.meta.env.VITE_API_URL
 	const { t } = useTranslation()
+	const location = useLocation()
 	const [menuOpen, setMenuOpen] = useState(false)
 	const token = localStorage.getItem('accessToken')
 	const [user, setUser] = useState<User | null>(() => {
@@ -77,25 +78,45 @@ function Header() {
 					{[
 						{ to: '/', label: t('home') },
 						{ to: '#', label: t('about') },
-						{ to: '#', label: t('reuses') },
-					].map((item, index) => (
-						<Link
-							key={index}
-							to={item.to}
-							className='text-gray-600 hover:text-[#461773] font-medium relative group transition-colors duration-300'
-						>
-							{item.label}
-							<span className='absolute bottom-0 left-0 w-0 h-0.5 bg-[#461773] transition-all duration-300 group-hover:w-full'></span>
-						</Link>
-					))}
+						{ to: '/resurs', label: t('reuses') },
+					].map((item, index) => {
+						const isActive = location.pathname === item.to
+
+						return (
+							<Link
+								key={index}
+								to={item.to}
+								className={`text-gray-600 font-medium relative group transition-colors duration-300 ${
+									isActive ? 'text-[#461773]' : 'hover:text-[#461773]'
+								}`}
+							>
+								{item.label}
+								<span
+									className={`absolute bottom-0 left-0 h-0.5 bg-[#461773] transition-all duration-300 ${
+										isActive ? 'w-full' : 'w-0 group-hover:w-full'
+									}`}
+								></span>
+							</Link>
+						)
+					})}
 
 					<Link
-						to='#'
-						className='text-gray-600 hover:text-[#461773] font-medium flex items-center gap-2 relative group transition-colors duration-300'
+						to='/like'
+						className={`text-gray-600 font-medium flex items-center gap-2 relative group transition-colors duration-300 ${
+							location.pathname === '/like'
+								? 'text-[#461773]'
+								: 'hover:text-[#461773]'
+						}`}
 					>
 						<GoHeart className='text-lg' />
 						{t('like')}
-						<span className='absolute bottom-0 left-0 w-0 h-0.5 bg-[#461773] transition-all duration-300 group-hover:w-full'></span>
+						<span
+							className={`absolute bottom-0 left-0 h-0.5 bg-[#461773] transition-all duration-300 ${
+								location.pathname === '/like'
+									? 'w-full'
+									: 'w-0 group-hover:w-full'
+							}`}
+						></span>
 					</Link>
 
 					{token && (
@@ -106,7 +127,11 @@ function Header() {
 							>
 								<MdQueue />
 								{t('queue')}
-								<span className='absolute bottom-0 left-0 w-0 h-0.5 bg-[#461773] transition-all duration-300 group-hover:w-full'></span>
+								<span className={`absolute bottom-0 left-0 h-0.5 bg-[#461773] transition-all duration-300 ${
+								location.pathname === '/queues'
+									? 'w-full'
+									: 'w-0 group-hover:w-full'
+							}`}></span>
 							</Link>
 
 							{data && ceoUser === 'CEO' ? (
