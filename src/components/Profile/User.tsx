@@ -44,7 +44,7 @@ export default function Admen() {
 	if (isLoading) {
 		return (
 			<>
-				<Skeleton className='h-[30px] w-[180px] rounded-lg' />
+				<Skeleton className='h-[40px] w-[180px] rounded-[50px] max-[768px]:w-[40px]' />
 			</>
 		)
 	}
