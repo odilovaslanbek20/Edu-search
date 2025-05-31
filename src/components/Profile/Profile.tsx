@@ -72,7 +72,7 @@ export default function Profile() {
 	if (!user) return null
 
 	return (
-		<div className='max-w-3xl mx-auto mt-12 px-4 space-y-8'>
+		<div className='max-w-3xl mb-[30px] mx-auto mt-12 px-4 space-y-8'>
 			<div className='flex items-center gap-6'>
 				<img
 					src={user.avatar || '/default-avatar.png'}

@@ -8,6 +8,7 @@ import ProfilePage from './pages/Profile/Profile'
 import Footer from './components/Footer/Footer'
 import CeoCreate from './pages/Ceo/CeoCreate'
 import ElonPage from './pages/Elon/Elon'
+import NotFaundPage from './pages/NotFaund/NotFaundPage'
 
 function App() {
 	return (
@@ -21,6 +22,7 @@ function App() {
 				<Route path='/center/:id' element={<ProductsDetailsPage />} />
 				<Route path='/ceo' element={<CeoCreate />} />
 				<Route path='/elon' element={<ElonPage />} />
+				<Route path='*' element={<NotFaundPage />} />
 			</Routes>
 			<Footer/>
 		</>
