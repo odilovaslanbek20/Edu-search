@@ -10,10 +10,12 @@ import CeoCreate from './pages/Ceo/CeoCreate'
 import ElonPage from './pages/Elon/Elon'
 import NotFaundPage from './pages/NotFaund/NotFaundPage'
 import ResurslarPage from './pages/Resurslar/Resurslar'
+import RefreshToken from './components/Auth/RefreshToken'
 
 function App() {
 	return (
 		<>
+		 <RefreshToken/>
 			<Routes>
 				<Route path='/' element={<HomePage />} />
 				<Route path='/profile' element={<ProfilePage />} />

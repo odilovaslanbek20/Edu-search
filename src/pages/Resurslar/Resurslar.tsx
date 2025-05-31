@@ -6,8 +6,8 @@ function ResurslarPage() {
 	return (
 		<>
 			<Header />
-			<Hero />
-			<main className=' py-[50px]'>
+			<main className=' pt-[50px]'>
+				<Hero />
 				<Resurs />
 			</main>
 		</>
