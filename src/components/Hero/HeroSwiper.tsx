@@ -54,7 +54,7 @@ export default function HeroSwiper() {
 				<SwiperSlide className='group flex-col' key={data?.id}>
 					<img
 						className='h-full bg-contain'
-						src={data?.image}
+						src={`${url}/image/${data?.image}`}
 						alt={data?.name}
 					/>
 					<div className='opacity-0 group-hover:opacity-100 transition-all duration-500 fixed w-full h-full bg-[#000]/50'></div>

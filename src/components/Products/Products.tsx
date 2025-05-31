@@ -116,6 +116,7 @@ function CardWith3DEffect({
 	const [transform, setTransform] = useState('')
 
 	const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		if (window.innerWidth < 1024) return 
 		const rect = e.currentTarget.getBoundingClientRect()
 		const x = e.clientX - rect.left
 		const y = e.clientY - rect.top

@@ -2,8 +2,12 @@ import { useState } from 'react'
 import useGetHooks from '../Hooks/useGetHooks'
 import { FaDownload } from 'react-icons/fa6'
 import { Skeleton } from '../ui/skeleton'
+import { Input } from '../ui/input'
+import { FaSearch } from 'react-icons/fa'
+import ResursCategory from './ResurseCategory'
 
 type Resource = {
+	categoryId: number
 	id: number
 	name: string
 	image: string
@@ -16,6 +20,9 @@ function Resurs() {
 	const { data, isLoading, error } = useGetHooks<{ data: Resource[] }>(
 		`${url}/resources`
 	)
+	const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null) 
+
+	const [searchTerm, setSearchTerm] = useState('')
 
 	if (isLoading) {
 		const skeletonArray = Array(10).fill(null)
@@ -44,16 +51,43 @@ function Resurs() {
 			</div>
 		)
 
+		const filteredData: Resource[] = data?.data
+		.filter(item =>
+			item.name.toLowerCase().includes(searchTerm.toLowerCase())
+		)
+		.filter(item =>
+			selectedCategoryId === null || item.categoryId === selectedCategoryId || selectedCategoryId === 0
+		) || []
+
 	return (
 		<section className='max-w-7xl mx-auto my-10 px-4'>
-			<h2 className='text-3xl font-bold mb-8 text-center text-gray-800'>
+			<h2 className='text-3xl font-bold mb-6 text-center text-gray-800'>
 				Resurslar
 			</h2>
 
+			<ResursCategory onSelectCategory={setSelectedCategoryId} selectedId={selectedCategoryId} />
+
+			<div className='max-w-md mx-auto mb-10'>
+				<div className='relative'>
+					<FaSearch className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm' />
+					<Input
+						type='text'
+						value={searchTerm}
+						onChange={e => setSearchTerm(e.target.value)}
+						placeholder='PDF, maqola, video...'
+						className='w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 shadow focus:outline-none focus:ring-2 focus:ring-violet-600 focus:border-transparent transition-all duration-300 text-base'
+					/>
+				</div>
+			</div>
+
 			<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8'>
-				{data?.data.map(item => (
-					<Card key={item.id} item={item} />
-				))}
+				{filteredData.length > 0 ? (
+					filteredData.map(item => <Card key={item.id} item={item} />)
+				) : (
+					<p className='text-center col-span-full text-gray-500'>
+						Mos resurs topilmadi.
+					</p>
+				)}
 			</div>
 		</section>
 	)
@@ -63,6 +97,7 @@ function Card({ item }: { item: Resource }) {
 	const [transform, setTransform] = useState('')
 
 	const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		if (window.innerWidth < 1024) return 
 		const rect = e.currentTarget.getBoundingClientRect()
 		const x = e.clientX - rect.left
 		const y = e.clientY - rect.top

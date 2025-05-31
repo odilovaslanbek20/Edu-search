@@ -59,7 +59,7 @@ export default function Admen() {
 						className='flex items-center max-[500px]:w-[30px] max-[500px]:h-[30px] gap-[8px] p-0 rounded-[50px] pr-[7px] max-[768px]:p-0'
 					>
 						<Avatar className='w-10 h-10 max-[500px]:w-[30px] max-[500px]:h-[30px] border border-transparent shadow-none ml-[-1.5px] max-[768px]:m-0'>
-							<AvatarImage src={user?.image} alt='User avatar' />
+							<AvatarImage src={`${url}/image/${user?.image}`} alt='User avatar' />
 							<AvatarFallback className='uppercase text-sm tracking-wide bg-[#D9D9D9] text-black'>
 								{user?.firstName?.[0]}
 								{user?.lastName?.[0]}
