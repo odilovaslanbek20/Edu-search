@@ -5,6 +5,7 @@ import { Skeleton } from '../ui/skeleton'
 import { Input } from '../ui/input'
 import { FaSearch } from 'react-icons/fa'
 import ResursCategory from './ResurseCategory'
+import ResourceCards from './ResursCards'
 
 type Resource = {
 	categoryId: number
@@ -66,6 +67,8 @@ function Resurs() {
 			</h2>
 
 			<ResursCategory onSelectCategory={setSelectedCategoryId} selectedId={selectedCategoryId} />
+
+			<ResourceCards/>
 
 			<div className='max-w-md mx-auto mb-10'>
 				<div className='relative'>
