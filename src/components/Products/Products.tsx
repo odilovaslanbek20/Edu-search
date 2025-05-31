@@ -97,7 +97,7 @@ function Products() {
 
 			<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8'>
 				{centerData?.map(center => (
-					<CardWith3DEffect key={center.id} center={center} t={t} />
+					<CardWith3DEffect key={center.id} center={center} t={t} url={url} />
 				))}
 			</div>
 		</section>
@@ -107,9 +107,11 @@ function Products() {
 function CardWith3DEffect({
 	center,
 	t,
+	url
 }: {
 	center: Center
 	t: (key: string) => string
+	url: string
 }) {
 	const [transform, setTransform] = useState('')
 
@@ -165,7 +167,7 @@ function CardWith3DEffect({
 
 			{center.image && (
 				<img
-					src={center.image}
+					src={`${url}/image/${center?.image}`}
 					alt={center.name}
 					className='w-full h-[200px] object-cover mt-[-25px]'
 				/>

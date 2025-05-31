@@ -82,41 +82,43 @@ function Card({ item }: { item: Resource }) {
 	}
 
 	return (
-		<div
-			className='bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden flex flex-col'
-			onMouseMove={handleMouseMove}
-			onMouseLeave={handleMouseLeave}
-			style={{
-				transform,
-				transition: 'transform 0.2s ease',
-			}}
-		>
-			<img
-				src={item.image}
-				alt={item.name}
-				className='w-full h-48 object-cover'
-			/>
-			<div className='p-5 flex flex-col flex-grow'>
-				<h3 className='text-xl font-semibold mb-2 text-gray-900'>
-					{item.name}
-				</h3>
-				<p className='text-gray-600 text-sm flex-grow'>
-					{item.description.length > 100
-						? item.description.slice(0, 100) + '...'
-						: item.description}
-				</p>
-				<a
-					href={item.media}
-					target='_blank'
-					rel='noopener noreferrer'
-					className='mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-[#4A1D96] px-5 py-2 text-white font-semibold text-sm hover:bg-[#3b137c] transition-colors '
-					download
-				>
-					<FaDownload className='text-white text-lg' />
-					Yuklab olish
-				</a>
+		<section>
+			<div
+				className='bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden flex flex-col'
+				onMouseMove={handleMouseMove}
+				onMouseLeave={handleMouseLeave}
+				style={{
+					transform,
+					transition: 'transform 0.2s ease',
+				}}
+			>
+				<img
+					src={item.image}
+					alt={item.name}
+					className='w-full h-48 object-cover'
+				/>
+				<div className='p-5 flex flex-col flex-grow'>
+					<h3 className='text-xl font-semibold mb-2 text-gray-900'>
+						{item.name}
+					</h3>
+					<p className='text-gray-600 text-sm flex-grow'>
+						{item.description.length > 100
+							? item.description.slice(0, 100) + '...'
+							: item.description}
+					</p>
+					<a
+						href={item.media}
+						target='_blank'
+						rel='noopener noreferrer'
+						className='mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-[#4A1D96] px-5 py-2 text-white font-semibold text-sm hover:bg-[#3b137c] transition-colors '
+						download
+					>
+						<FaDownload className='text-white text-lg' />
+						Yuklab olish
+					</a>
+				</div>
 			</div>
-		</div>
+		</section>
 	)
 }
 
