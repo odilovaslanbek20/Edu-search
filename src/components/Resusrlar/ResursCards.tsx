@@ -8,6 +8,7 @@ interface ResursCategory {
 	id: number
 	name: string
 	image: string
+	status: string
 }
 
 interface Upload {
@@ -55,7 +56,7 @@ const ResourceCard = () => {
 		return <p className='text-center py-10 text-red-500'>Xatolik yuz berdi</p>
 
 	console.log(response)
-	console.log(response1)
+	console.log('respons1', response1)
 	console.log(data)
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -72,29 +73,27 @@ const ResourceCard = () => {
 			formData.append('image', file)
 		}
 
-		await postData1(`${url}/upload`, formData)
+		const img = await postData1(`${url}/upload`, formData)
 
-		if (response1?.data) {
-			const resourceData = {
-				categoryId: category,
-				name: name,
-				description: tavsiv,
-				media: mediya,
-				image: `https://findcourse.net.uz/api/image/${response1.data}`,
-			}
-		
-			await postData(`${url}/resources`, resourceData, {
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`,
-				},
-			})
-		
-			setIsOpen(false)
-		} else {
-			alert('Faylni yuklashda xatolik yuz berdi')
-		}
-		
+if (img && 'data' in img) {
+	const resourceData = {
+		categoryId: category,
+		name: name,
+		description: tavsiv,
+		media: mediya,
+		image: `https://findcourse.net.uz/api/image/${img.data}`,
+	}
+
+	await postData(`${url}/resources`, resourceData, {
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`,
+		},
+	})
+
+	setIsOpen(false)
+}
+
 	}
 
 	return (
