@@ -7,12 +7,15 @@ export default function usePostHooks<T = unknown>() {
 	const [error, setError] = useState<null | string>(null)
 	const [status, setStatus] = useState<string>("")
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const postData = async (url: string, data: object, _p0?: { headers: { 'Content-Type': string } }) => {
+	const postData = async (
+		url: string,
+		data: object,
+		options?: { headers?: Record<string, string> }
+	) => {
 		setLoading(true)
 		setError(null)
 		try {
-			const res = await axios.post<T>(url, data)
+			const res = await axios.post<T>(url, data, options)
 			setResponse(res.data)
 			setStatus(res.status.toString())
 		} catch (err: unknown) {
@@ -25,6 +28,7 @@ export default function usePostHooks<T = unknown>() {
 			setLoading(false)
 		}
 	}
+	
 
 	return { response, loading, error, status, postData }
 }

@@ -131,8 +131,8 @@ function Card({ item }: { item: Resource }) {
 				}}
 			>
 				<img
-					src={item.image}
-					alt={item.name}
+					src={item?.image}
+					alt={item?.name}
 					className='w-full h-48 object-cover'
 				/>
 				<div className='p-5 flex flex-col flex-grow'>
@@ -145,11 +145,10 @@ function Card({ item }: { item: Resource }) {
 							: item.description}
 					</p>
 					<a
-						href={item.media}
-						target='_blank'
-						rel='noopener noreferrer'
-						className='mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-[#4A1D96] px-5 py-2 text-white font-semibold text-sm hover:bg-[#3b137c] transition-colors '
+						href={item?.media}
 						download
+						target='_blank'
+						className='mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-[#4A1D96] px-5 py-2 text-white font-semibold text-sm hover:bg-[#3b137c] transition-colors '
 					>
 						<FaDownload className='text-white text-lg' />
 						Yuklab olish
