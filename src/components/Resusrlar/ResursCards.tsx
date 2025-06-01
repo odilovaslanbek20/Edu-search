@@ -62,45 +62,39 @@ const ResourceCard = () => {
 		e.preventDefault()
 		const token = localStorage.getItem('accessToken')
 
-		if (!file) {
-			alert('Iltimos, fayl tanlang!')
-			return
-		}
-
 		if (!token) {
-			alert('Token topilmadi!')
+			alert('Token topilm topilmadi!')
 			return
 		}
-
-		
 
 		const formData = new FormData()
-		formData.append('image', file)
+		if (file) {
+			formData.append('image', file)
+		}
 
 		await postData1(`${url}/upload`, formData)
 
-		if (response1) {
+		if (response1?.data) {
 			const resourceData = {
-				categoryId: category, 
+				categoryId: category,
 				name: name,
 				description: tavsiv,
 				media: mediya,
-				image: `https://findcourse.net.uz/api/image/${response1?.data}`, 
+				image: `https://findcourse.net.uz/api/image/${response1.data}`,
 			}
-
-
+		
 			await postData(`${url}/resources`, resourceData, {
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`
-				}
-				,
+					Authorization: `Bearer ${token}`,
+				},
 			})
-
+		
 			setIsOpen(false)
 		} else {
 			alert('Faylni yuklashda xatolik yuz berdi')
 		}
+		
 	}
 
 	return (
