@@ -17,7 +17,6 @@ interface Upload {
 const ResourceCard = () => {
 	const [isOpen, setIsOpen] = useState(false)
 	const url = import.meta.env.VITE_API_URL
-	const token = localStorage.getItem('accessToken')
 	const [category, setCategory] = useState('')
 	const [name, setName] = useState('')
 	const [tavsiv, setTavsif] = useState('')
@@ -61,9 +60,15 @@ const ResourceCard = () => {
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
+		const token = localStorage.getItem('accessToken')
 
 		if (!file) {
 			alert('Iltimos, fayl tanlang!')
+			return
+		}
+
+		if (!token) {
+			alert('Token topilmadi!')
 			return
 		}
 
