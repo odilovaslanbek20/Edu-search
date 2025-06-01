@@ -16,16 +16,28 @@ type Resource = {
 	media: string
 }
 
+interface MyData {
+	id: number
+	resources: Resource[]
+}
+
 function Resurs() {
 	const url = import.meta.env.VITE_API_URL
 	const { data, isLoading, error } = useGetHooks<{ data: Resource[] }>(
 		`${url}/resources`
 	)
+
+	const {
+		data: myData,
+		isLoading: myDataLoading,
+		error: myDataError,
+	} = useGetHooks<{ data: MyData }>(`${url}/users/mydata`)
+
 	const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null) 
 
 	const [searchTerm, setSearchTerm] = useState('')
 
-	if (isLoading) {
+	if (isLoading || myDataLoading) {
 		const skeletonArray = Array(10).fill(null)
 
 		return (
@@ -45,26 +57,38 @@ function Resurs() {
 			</div>
 		)
 	}
-	if (error)
+	if (error || myDataError)
 		return (
 			<div className='text-center py-10 text-red-600'>
-				Error: {error.message}
+				Error: {error?.message || myDataError?.message}
 			</div>
 		)
 
-		const filteredData: Resource[] = data?.data
-		.filter(item =>
-			item.name.toLowerCase().includes(searchTerm.toLowerCase())
-		)
-		.filter(item =>
-			selectedCategoryId === null || item.categoryId === selectedCategoryId || selectedCategoryId === 0
-		) || []
+		const filteredData: Resource[] =
+		selectedCategoryId === 0
+			? myData?.data?.resources.filter(item =>
+					item.name.toLowerCase().includes(searchTerm.toLowerCase())
+				) || []
+			: data?.data
+					.filter(item =>
+						item.name.toLowerCase().includes(searchTerm.toLowerCase())
+					)
+					.filter(item =>
+						selectedCategoryId === null || item.categoryId === selectedCategoryId
+					) || []
+	
+
+
+		console.log(myData);
+		
 
 	return (
 		<section className='max-w-7xl mx-auto my-10 px-4'>
 			<h2 className='text-3xl font-bold mb-6 text-center text-gray-800'>
 				Resurslar
 			</h2>
+
+			
 
 			<ResursCategory onSelectCategory={setSelectedCategoryId} selectedId={selectedCategoryId} />
 
