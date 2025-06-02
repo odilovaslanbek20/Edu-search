@@ -16,6 +16,7 @@ type Resource = {
 	image: string
 	description: string
 	media: string
+	userId: number
 }
 
 interface MyData {
@@ -25,9 +26,7 @@ interface MyData {
 
 function Resurs() {
 	const url = import.meta.env.VITE_API_URL
-	const { data, isLoading, error } = useGetHooks<{ data: Resource[] }>(
-		`${url}/resources`
-	)
+	const { data, isLoading, error } = useGetHooks<{ data: Resource[] }>(`${url}/resources`)
 
 	const {
 		data: myData,
@@ -35,9 +34,7 @@ function Resurs() {
 		error: myDataError,
 	} = useGetHooks<{ data: MyData }>(`${url}/users/mydata`)
 
-	const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
-		null
-	)
+	const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null)
 
 	const [searchTerm, setSearchTerm] = useState('')
 
@@ -67,6 +64,9 @@ function Resurs() {
 				Error: {error?.message || myDataError?.message}
 			</div>
 		)
+
+	console.log('id', myData?.data?.id);
+	console.log('userId', myData?.data?.resources[0]?.userId);
 
 	const filteredData: Resource[] =
 		selectedCategoryId === 0
@@ -148,7 +148,7 @@ function Card({ item }: { item: Resource }) {
 	return (
 		<section>
 			<div
-				className='bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden flex flex-col'
+				className='relative w-full h-[370px] bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden flex flex-col'
 				onMouseMove={handleMouseMove}
 				onMouseLeave={handleMouseLeave}
 				style={{
@@ -172,19 +172,17 @@ function Card({ item }: { item: Resource }) {
 				</div>
 				</div>
 				<div className='p-5 flex flex-col flex-grow'>
-					<h3 className='text-xl font-semibold mb-2 text-gray-900'>
-						{item.name}
+					<h3 className='text-xl font-semibold mb-2 text-gray-900 line-clamp-1' >
+						{item?.name}
 					</h3>
-					<p className='text-gray-600 text-sm flex-grow'>
-						{item.description.length > 100
-							? item.description.slice(0, 100) + '...'
-							: item.description}
+					<p className='text-gray-600 text-sm  line-clamp-2'>
+						{item?.description}
 					</p>
 					<a
 						href={item?.media}
 						download
 						target='_blank'
-						className='mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-[#4A1D96] px-5 py-2 text-white font-semibold text-sm hover:bg-[#3b137c] transition-colors '
+						className='absolute bottom-5 right-5 mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-[#4A1D96] px-5 py-2 text-white font-semibold text-sm hover:bg-[#3b137c] transition-colors '
 					>
 						<FaDownload className='text-white text-lg' />
 						Yuklab olish

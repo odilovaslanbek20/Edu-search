@@ -80,7 +80,7 @@ function Header() {
 						{ to: '#', label: t('about') },
 						{ to: '/resurs', label: t('reuses') },
 					].map((item, index) => {
-						const isActive = location.pathname === item.to
+						const isActive = location.pathname === item?.to
 
 						return (
 							<Link
@@ -90,7 +90,7 @@ function Header() {
 									isActive ? 'text-[#461773]' : 'hover:text-[#461773]'
 								}`}
 							>
-								{item.label}
+								{item?.label}
 								<span
 									className={`absolute bottom-0 left-0 h-0.5 bg-[#461773] transition-all duration-300 ${
 										isActive ? 'w-full' : 'w-0 group-hover:w-full'
@@ -212,7 +212,7 @@ function Header() {
 					<Link to='#' className='text-[18px] font-semibold text-gray-600'>
 						{t('about')}
 					</Link>
-					<Link to='#' className='text-[18px] font-semibold text-gray-600'>
+					<Link to='/resurs' className='text-[18px] font-semibold text-gray-600'>
 						{t('reuses')}
 					</Link>
 					<Link
