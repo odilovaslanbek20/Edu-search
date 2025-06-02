@@ -75,25 +75,24 @@ const ResourceCard = () => {
 
 		const img = await postData1(`${url}/upload`, formData)
 
-if (img && 'data' in img) {
-	const resourceData = {
-		categoryId: category,
-		name: name,
-		description: tavsiv,
-		media: mediya,
-		image: `https://findcourse.net.uz/api/image/${img.data}`,
-	}
+		if (img && 'data' in img) {
+			const resourceData = {
+				categoryId: category,
+				name: name,
+				description: tavsiv,
+				media: mediya,
+				image: `https://findcourse.net.uz/api/image/${img.data}`,
+			}
 
-	await postData(`${url}/resources`, resourceData, {
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${token}`,
-		},
-	})
+			await postData(`${url}/resources`, resourceData, {
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			})
 
-	setIsOpen(false)
-}
-
+			setIsOpen(false)
+		}
 	}
 
 	return (

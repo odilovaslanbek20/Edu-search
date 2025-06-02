@@ -6,6 +6,8 @@ import { Input } from '../ui/input'
 import { FaSearch } from 'react-icons/fa'
 import ResursCategory from './ResurseCategory'
 import ResourceCards from './ResursCards'
+import { FiEdit } from 'react-icons/fi'
+import { AiOutlineDelete } from "react-icons/ai";
 
 type Resource = {
 	categoryId: number
@@ -33,7 +35,9 @@ function Resurs() {
 		error: myDataError,
 	} = useGetHooks<{ data: MyData }>(`${url}/users/mydata`)
 
-	const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null) 
+	const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
+		null
+	)
 
 	const [searchTerm, setSearchTerm] = useState('')
 
@@ -64,23 +68,20 @@ function Resurs() {
 			</div>
 		)
 
-		const filteredData: Resource[] =
+	const filteredData: Resource[] =
 		selectedCategoryId === 0
 			? myData?.data?.resources.filter(item =>
 					item.name.toLowerCase().includes(searchTerm.toLowerCase())
-				) || []
+			  ) || []
 			: data?.data
 					.filter(item =>
 						item.name.toLowerCase().includes(searchTerm.toLowerCase())
 					)
-					.filter(item =>
-						selectedCategoryId === null || item.categoryId === selectedCategoryId
+					.filter(
+						item =>
+							selectedCategoryId === null ||
+							item.categoryId === selectedCategoryId
 					) || []
-	
-
-
-		console.log(myData);
-		
 
 	return (
 		<section className='max-w-7xl mx-auto my-10 px-4'>
@@ -88,11 +89,12 @@ function Resurs() {
 				Resurslar
 			</h2>
 
-			
+			<ResursCategory
+				onSelectCategory={setSelectedCategoryId}
+				selectedId={selectedCategoryId}
+			/>
 
-			<ResursCategory onSelectCategory={setSelectedCategoryId} selectedId={selectedCategoryId} />
-
-			<ResourceCards/>
+			<ResourceCards />
 
 			<div className='max-w-md mx-auto mb-10'>
 				<div className='relative'>
@@ -124,7 +126,7 @@ function Card({ item }: { item: Resource }) {
 	const [transform, setTransform] = useState('')
 
 	const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-		if (window.innerWidth < 1024) return 
+		if (window.innerWidth < 1024) return
 		const rect = e.currentTarget.getBoundingClientRect()
 		const x = e.clientX - rect.left
 		const y = e.clientY - rect.top
@@ -154,11 +156,21 @@ function Card({ item }: { item: Resource }) {
 					transition: 'transform 0.2s ease',
 				}}
 			>
-				<img
-					src={item?.image}
-					alt={item?.name}
-					className='w-full h-48 object-cover'
-				/>
+				<div className='relative'>
+					<img
+						src={item?.image}
+						alt={item?.name}
+						className='w-full h-48 object-cover'
+					/>
+				<div className="absolute top-4 right-4">
+				<div className='flex items-center justify-center cursor-pointer w-[40px] h-[40px] rounded-full bg-[#fff] mb-[5px]'>
+						<FiEdit className='top-2 right-2 text-2xl text-[#461773]' />
+					</div>
+					<div className='flex items-center justify-center cursor-pointer w-[40px] h-[40px] rounded-full bg-[#fff]'>
+						<AiOutlineDelete className='top-2 right-2 text-2xl text-[#461773]' />
+					</div>
+				</div>
+				</div>
 				<div className='p-5 flex flex-col flex-grow'>
 					<h3 className='text-xl font-semibold mb-2 text-gray-900'>
 						{item.name}

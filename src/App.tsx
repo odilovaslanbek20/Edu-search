@@ -13,12 +13,14 @@ import NotFaundPage from './pages/NotFaund/NotFaundPage'
 import ResurslarPage from './pages/Resurslar/Resurslar'
 import RefreshToken from './components/Auth/RefreshToken'
 import ProtectedRoute from './ProtectedRoute'
+import { Toaster } from 'react-hot-toast'
 
 function App() {
   const isAuth = Boolean(localStorage.getItem('token'))
 
   return (
     <>
+       <Toaster />
       <RefreshToken />
       <Routes>
         <Route path='/' element={<HomePage />} />

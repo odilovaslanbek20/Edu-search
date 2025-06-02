@@ -18,7 +18,7 @@ export default function usePostHooks<T = unknown>() {
 			const res = await axios.post<T>(url, data, options)
 			setResponse(res.data)
 			setStatus(res.status.toString())
-			return res.data // <-- qo‘shildi
+			return res.data 
 		} catch (err: unknown) {
 			if (err instanceof Error) {
 				setError(err.message)
