@@ -20,6 +20,7 @@ import { toast } from 'react-toastify'
 import { useDelete } from '../Hooks/useDeleteHooks'
 import { FaStar } from 'react-icons/fa'
 import usePutData from '../Hooks/usePutData'
+import { HiArrowLeft } from 'react-icons/hi2'
 
 interface User {
 	id: string
@@ -140,8 +141,7 @@ const ProductDetails = () => {
 	const center = data?.data
 	const myId = myData?.data?.id
 
-	console.log('myID', myId);
-	
+	console.log('myID', myId)
 
 	const comment = async (e: React.FormEvent) => {
 		e.preventDefault()
@@ -238,6 +238,13 @@ const ProductDetails = () => {
 			)}
 
 			<section className='mt-10 max-w-6xl mx-auto px-4 py-6'>
+				<button
+					onClick={() => window.history.back()}
+					className='inline-flex items-center gap-2 text-[#461773] hover:text-[#5f2099] cursor-pointer text-sm font-medium transition-all duration-300'
+				>
+					<HiArrowLeft className='w-5 h-5' />
+					Back
+				</button>
 				<Card className='flex flex-col md:flex-row gap-4 overflow-hidden min-h-[500px]'>
 					<div className='w-full md:w-1/2 flex flex-col'>
 						<img
