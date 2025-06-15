@@ -14,6 +14,7 @@ interface User {
 	phone?: string
 	role?: string
 	avatar?: string
+	image?: string
 }
 
 export default function Profile() {
@@ -75,7 +76,7 @@ export default function Profile() {
 		<div className='max-w-3xl mb-[30px] mx-auto mt-12 px-4 space-y-8'>
 			<div className='flex items-center gap-6'>
 				<img
-					src={user.avatar || '/default-avatar.png'}
+					src={`https://findcourse.net.uz/api/image/${user?.image}`}
 					alt={`${user.firstName} ${user.lastName}`}
 					className='w-20 h-20 rounded-full object-cover border-4 border-[#461773] shadow-md'
 				/>

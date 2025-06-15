@@ -14,17 +14,23 @@ import ResurslarPage from './pages/Resurslar/Resurslar'
 import RefreshToken from './components/Auth/RefreshToken'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import SevimlilarPage from './pages/Sevimlilar/Sevimlilar'
 
 function App() {
-	fetch('http://34.9.169.36:4000/api-docs/centers').then(res =>
-		console.log('Fetch_data', res)
-	).catch(error => 
-    console.log(error)
-  )
-
 	return (
 		<>
-			<ToastContainer />
+			<ToastContainer
+				position='top-right'
+				autoClose={3000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme='light'
+			/>
 			<RefreshToken />
 			<Routes>
 				<Route path='/' element={<HomePage />} />
@@ -35,6 +41,7 @@ function App() {
 				<Route path='/ceo' element={<CeoCreate />} />
 				<Route path='/elon' element={<ElonPage />} />
 				<Route path='/resurs' element={<ResurslarPage />} />
+				<Route path='/like' element={<SevimlilarPage />} />
 
 				<Route path='/profile' element={<ProfilePage />} />
 

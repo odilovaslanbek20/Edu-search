@@ -216,7 +216,7 @@ function Header() {
 						{t('reuses')}
 					</Link>
 					<Link
-						to='#'
+						to='/like'
 						className='text-[18px] font-semibold text-gray-600 flex items-center gap-2'
 					>
 						<GoHeart className='text-lg' />

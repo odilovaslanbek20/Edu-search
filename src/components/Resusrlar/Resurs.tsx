@@ -8,6 +8,7 @@ import { Input } from '../ui/input'
 import ResursCategory from './ResurseCategory'
 import { useDelete } from '../Hooks/useDeleteHooks'
 import BtnLoading from '../Btn/BtnLoading'
+import ResourceCard from './ResursCards'
 
 type Resource = {
   categoryId: number
@@ -84,6 +85,8 @@ function Resurs() {
         selectedId={selectedCategoryId}
       />
 
+      <ResourceCard/>
+
       <div className='max-w-md mx-auto mb-10'>
         <div className='relative'>
           <FaSearch className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm' />
@@ -140,8 +143,13 @@ function Card({
     setTransform('perspective(600px) rotateX(0deg) rotateY(0deg)')
   }
 
+  const edit = async () => {
+
+  }
+
 	const deleteResurs = async () => {
     await deleteItem(`${url}/resources/${item?.id}`)
+    window.location.reload()
 	}
 
   if (error) {
@@ -166,8 +174,8 @@ function Card({
           className='w-full h-48 object-cover'
         />
         {item?.userId === myUserId && (
-          <div className="absolute top-4 right-4">
-            <div className='flex items-center justify-center cursor-pointer w-[40px] h-[40px] rounded-full bg-white mb-[5px]'>
+          <div  className="absolute top-4 right-4">
+            <div onClick={edit} className='flex items-center justify-center cursor-pointer w-[40px] h-[40px] rounded-full bg-white mb-[5px]'>
               <FiEdit className='text-2xl text-[#461773]' />
             </div>
             <div onClick={deleteResurs} className='flex items-center justify-center cursor-pointer w-[40px] h-[40px] rounded-full bg-white'>
