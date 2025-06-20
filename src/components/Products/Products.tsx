@@ -13,6 +13,7 @@ import { toast } from 'react-toastify'
 import BtnLoading from '../Btn/BtnLoading'
 import usePostHooks from '../Hooks/usePostHooks'
 import { BiSearch } from 'react-icons/bi'
+import { IoHeartDislikeOutline } from "react-icons/io5";
 
 type Major = {
 	id: number
@@ -166,13 +167,27 @@ function CardWith3DEffect({
 		error: myDataError,
 	} = useGetHooks<UserIDResponse>(`${url}/users/mydata`)
 
-	const { deleteItem, loading, error } = useDelete()
+	const {
+		deleteItem,
+		loading: centerDeleteLoading,
+		error: centerDeleteError,
+	} = useDelete()
 
-	const { postData, loading: likeLoading, error: likeError } = usePostHooks()
+	const {
+		deleteItem: deleteLike,
+		loading: unlikeLoading,
+		error: unlikeError,
+	} = useDelete()
 
-	console.log(myDataLoading)
+	const {
+		postData,
+		loading: likeLoading,
+		error: likeError,
+	} = usePostHooks()
 
-	if (myDataError || error || likeError) {
+	console.log(myDataLoading);
+	
+	if (myDataError || centerDeleteError || likeError || unlikeError) {
 		return (
 			<div className='fixed w-full h-screen bg-white z-50 px-5'>
 				<div className='flex justify-center items-center h-full'>
@@ -197,9 +212,7 @@ function CardWith3DEffect({
 		const rotateX = ((y - centerY) / centerY) * 10
 		const rotateY = ((centerX - x) / centerX) * 10
 
-		setTransform(
-			`perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
-		)
+		setTransform(`perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`)
 	}
 
 	const handleMouseLeave = () => {
@@ -209,8 +222,12 @@ function CardWith3DEffect({
 	const handleDelete = async (e: React.FormEvent) => {
 		e.preventDefault()
 
-		await deleteItem(`${url}/centers/${center?.id}`)
-
+		await deleteItem(`${url}/centers/${center?.id}`, {
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-Type': 'application/json',
+					},
+				})
 		toast.success("O'chirildi...")
 		setTimeout(() => {
 			window.location.reload()
@@ -219,17 +236,12 @@ function CardWith3DEffect({
 
 	const handleLike = async (e: React.FormEvent) => {
 		e.preventDefault()
-
 		if (liked) return
-
-		const like = center?.id
 
 		try {
 			await postData(
 				`${url}/liked`,
-				{
-					centerId: like,
-				},
+				{ centerId: center?.id },
 				{
 					headers: {
 						Authorization: `Bearer ${token}`,
@@ -240,124 +252,120 @@ function CardWith3DEffect({
 			toast.success('Like qoʻshildi!')
 			setLiked(true)
 		} catch (err) {
-			console.log(err)
+			console.error(err)
 			toast.error('Like qoʻshilmadi.')
 		}
 	}
 
+	const handleUnlike = async (e: React.FormEvent) => {
+		e.preventDefault()
+		try {
+			await deleteLike(`${url}/liked/${center?.id}`, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+					'Content-Type': 'application/json',
+				},
+			})
+			toast.success('Unlike qilindi!')
+			setLiked(false)
+			setTimeout(() => {
+				window.location.reload()
+			}, 3500);
+		} catch (err) {
+			console.error(err)
+			toast.error('Unlike qilishda xatolik yuz berdi.')
+		}
+	}
+
 	return (
-		<>
-			<Card
-				className='relative border border-blue-200 shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden rounded-lg'
-				onMouseMove={handleMouseMove}
-				onMouseLeave={handleMouseLeave}
-				style={{
-					transform,
-					transition: 'transform 0.2s ease',
-				}}
-			>
-				<div className='absolute top-3 right-3 flex gap-2'>
-					{myData?.data?.id === center?.user?.id && (
-						<>
-							<Button
-								variant='ghost'
-								size='icon'
-								className='
-      bg-[#461773] hover:bg-[#5f2099]
-      text-white hover:text-yellow-400
-      border border-[#fff]
-      shadow-md hover:shadow-lg
-      rounded-full p-2 transition duration-300 ease-in-out
-      focus:outline-none focus:ring-2 cursor-pointer focus:ring-yellow-400 focus:ring-offset-1
-    '
-							>
-								<FaEdit className='text-xl' />
-							</Button>
+		<Card
+			className='relative border border-blue-200 shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden rounded-lg'
+			onMouseMove={handleMouseMove}
+			onMouseLeave={handleMouseLeave}
+			style={{ transform, transition: 'transform 0.2s ease' }}
+		>
+			<div className='absolute top-3 right-3 flex gap-2'>
+				{myData?.data?.id === center?.user?.id && (
+					<>
+						<Button variant='ghost' size='icon' className='bg-[#461773] hover:bg-[#5f2099] text-white hover:text-yellow-400 border border-[#fff] shadow-md hover:shadow-lg rounded-full p-2 transition duration-300 ease-in-out focus:outline-none focus:ring-2 cursor-pointer focus:ring-yellow-400 focus:ring-offset-1'>
+							<FaEdit className='text-xl' />
+						</Button>
 
-							<Button
-								onClick={handleDelete}
-								variant='ghost'
-								size='icon'
-								className='
-      bg-[#461773] hover:bg-[#5f2099]
-      text-white hover:text-red-400
-      border border-[#fff]
-      shadow-md hover:shadow-lg
-      rounded-full p-2 transition duration-300 ease-in-out
-      focus:outline-none focus:ring-2 cursor-pointer focus:ring-red-400 focus:ring-offset-1
-    '
-							>
-								{loading ? <BtnLoading /> : <FaTrash className='text-xl' />}
-							</Button>
-						</>
-					)}
+						<Button
+							onClick={handleDelete}
+							variant='ghost'
+							size='icon'
+							className='bg-[#461773] hover:bg-[#5f2099] text-white hover:text-red-400 border border-[#fff] shadow-md hover:shadow-lg rounded-full p-2 transition duration-300 ease-in-out focus:outline-none focus:ring-2 cursor-pointer focus:ring-red-400 focus:ring-offset-1'
+						>
+							{centerDeleteLoading ? <BtnLoading /> : <FaTrash className='text-xl' />}
+						</Button>
+					</>
+				)}
 
+				{liked ? (
+					<Button
+						onClick={handleUnlike}
+						variant='ghost'
+						size='icon'
+						className='bg-[#461773] hover:bg-[#5f2099] text-white hover:text-red-400 border border-[#fff] shadow-md hover:shadow-lg rounded-full p-2 transition duration-300 ease-in-out focus:outline-none focus:ring-2 cursor-pointer focus:ring-red-400 focus:ring-offset-1'
+					>
+						{unlikeLoading ? <BtnLoading /> : <IoHeartDislikeOutline className='text-xl text-pink-400' />}
+					</Button>
+				) : (
 					<Button
 						onClick={handleLike}
 						variant='ghost'
 						size='icon'
-						disabled={likeLoading || liked}
-						className='
-		bg-[#461773] hover:bg-[#5f2099]
-		text-white hover:text-pink-400
-		border border-[#fff]
-		shadow-md hover:shadow-lg
-		rounded-full p-2 transition duration-300 ease-in-out
-		focus:outline-none focus:ring-2 cursor-pointer focus:ring-pink-400 focus:ring-offset-1
-	'
+						disabled={likeLoading}
+						className='bg-[#461773] hover:bg-[#5f2099] text-white hover:text-pink-400 border border-[#fff] shadow-md hover:shadow-lg rounded-full p-2 transition duration-300 ease-in-out focus:outline-none focus:ring-2 cursor-pointer focus:ring-pink-400 focus:ring-offset-1'
 					>
-						{likeLoading ? (
-							<BtnLoading />
-						) : (
-							<AiOutlineHeart
-								className={`text-xl ${liked ? 'text-pink-400' : ''}`}
-							/>
-						)}
+						{likeLoading ? <BtnLoading /> : <AiOutlineHeart className='text-xl' />}
 					</Button>
+				)}
+			</div>
+
+			{center?.image && (
+				<img
+					src={`${url}/image/${center?.image}`}
+					alt={center?.name}
+					className='w-full h-[200px] object-cover mt-[-25px]'
+				/>
+			)}
+
+			<CardHeader>
+				<CardTitle className='text-2xl font-semibold text-[#461773] line-clamp-1'>
+					{center?.name}
+				</CardTitle>
+			</CardHeader>
+
+			<CardContent className='space-y-1 text-sm mt-[-15px] text-muted-foreground'>
+				<div className='flex items-center gap-2'>
+					<span className='text-[#461773] font-semibold'>📍 Hudud:</span>
+					<span>{center?.region?.name || "Noma'lum"}</span>
 				</div>
 
-				{center?.image && (
-					<img
-						src={`${url}/image/${center?.image}`}
-						alt={center?.name}
-						className='w-full h-[200px] object-cover mt-[-25px]'
-					/>
-				)}
+				<a href={`tel:${center.phone}`} className='flex items-center gap-2'>
+					<span className='text-[#461773] font-semibold'>📞 Telefon:</span>
+					<span>{center?.phone}</span>
+				</a>
 
-				<CardHeader>
-					<CardTitle className='text-2xl font-semibold text-[#461773] line-clamp-1'>
-						{center?.name}
-					</CardTitle>
-				</CardHeader>
+				<div className='flex items-center gap-2'>
+					<span className='text-[#461773] font-semibold'>👤 Mas'ul:</span>
+					<span>{`${center?.user?.firstName} ${center?.user?.lastName}`}</span>
+				</div>
 
-				<CardContent className='space-y-1 text-sm mt-[-15px] text-muted-foreground'>
-					<div className='flex items-center gap-2'>
-						<span className='text-[#461773] font-semibold'>📍 Hudud:</span>
-						<span>{center?.region?.name || "Noma'lum"}</span>
-					</div>
-
-					<a href={`tel:${center.phone}`} className='flex items-center gap-2'>
-						<span className='text-[#461773] font-semibold'>📞 Telefon:</span>
-						<span>{center?.phone}</span>
-					</a>
-
-					<div className='flex items-center gap-2'>
-						<span className='text-[#461773] font-semibold'>👤 Mas'ul:</span>
-						<span>{`${center?.user?.firstName} ${center?.user?.lastName}`}</span>
-					</div>
-
-					<div className='mt-4'>
-						<Link
-							to={`/center/${center?.id}`}
-							className='inline-block text-white bg-[#461773] hover:bg-[#5f2099] px-4 py-2 rounded-md text-sm font-medium transition'
-						>
-							{t('learnMore')}
-						</Link>
-					</div>
-				</CardContent>
-			</Card>
-		</>
+				<div className='mt-4'>
+					<Link
+						to={`/center/${center?.id}`}
+						className='inline-block text-white bg-[#461773] hover:bg-[#5f2099] px-4 py-2 rounded-md text-sm font-medium transition'
+					>
+						{t('learnMore')}
+					</Link>
+				</div>
+			</CardContent>
+		</Card>
 	)
 }
+
 
 export default Products
