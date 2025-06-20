@@ -6,7 +6,7 @@ export const useDelete = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  const deleteItem = async (url: string, p0: { headers: { Authorization: string; 'Content-Type': string } }) => {
+  const deleteItem = async (url: string) => {
     setLoading(true);
     setError(null);
     setSuccess(false);

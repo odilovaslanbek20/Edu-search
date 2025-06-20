@@ -222,12 +222,7 @@ function CardWith3DEffect({
 	const handleDelete = async (e: React.FormEvent) => {
 		e.preventDefault()
 
-		await deleteItem(`${url}/centers/${center?.id}`, {
-					headers: {
-						Authorization: `Bearer ${token}`,
-						'Content-Type': 'application/json',
-					},
-				})
+		await deleteItem(`${url}/centers/${center?.id}`)
 		toast.success("O'chirildi...")
 		setTimeout(() => {
 			window.location.reload()
@@ -260,12 +255,7 @@ function CardWith3DEffect({
 	const handleUnlike = async (e: React.FormEvent) => {
 		e.preventDefault()
 		try {
-			await deleteLike(`${url}/liked/${center?.id}`, {
-				headers: {
-					Authorization: `Bearer ${token}`,
-					'Content-Type': 'application/json',
-				},
-			})
+			await deleteLike(`${url}/liked/${center?.id}`)
 			toast.success('Unlike qilindi!')
 			setLiked(false)
 			setTimeout(() => {
