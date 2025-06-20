@@ -9,6 +9,10 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 import { useDelete } from '../Hooks/useDeleteHooks'
+import { toast } from 'react-toastify'
+import BtnLoading from '../Btn/BtnLoading'
+import usePostHooks from '../Hooks/usePostHooks'
+import { BiSearch } from 'react-icons/bi'
 
 type Major = {
 	id: number
@@ -61,9 +65,10 @@ function Products() {
 		`${url}/centers`
 	)
 
+	const [searchTerm, setSearchTerm] = useState('')
+
 	if (isLoading) {
 		const skeletonArray = Array(10).fill(null)
-
 		return (
 			<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 mt-[100px] mb-[40px]'>
 				{skeletonArray.map((_, i) => (
@@ -98,17 +103,46 @@ function Products() {
 
 	const centerData: Center[] | undefined = data?.data
 
+	const filteredCenters = centerData?.filter(center =>
+		center?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+	)
+
 	return (
 		<section className='max-w-7xl mx-auto px-6 py-10 min-h-screen'>
 			<h1 className='text-4xl font-bold mb-12 max-[1024px]:mb-[30px] text-center text-[#461773]'>
 				{t('heroTitle')}
 			</h1>
 
-			<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8'>
-				{centerData?.map(center => (
-					<CardWith3DEffect key={center.id} center={center} t={t} url={url} />
-				))}
-			</div>
+			<form className='w-full flex justify-center my-6'>
+				<div className='relative w-[90%] sm:w-[60%]'>
+					<input
+						type='text'
+						placeholder='Qidiruv orqali markaz toping...'
+						value={searchTerm}
+						onChange={e => setSearchTerm(e.target.value)}
+						className='
+							w-full pl-10 pr-4 py-2
+							rounded-full border border-gray-300
+							shadow-sm focus:outline-none focus:ring-2 focus:ring-[#461773] focus:border-transparent
+							text-sm sm:text-base
+							placeholder-gray-400
+						'
+					/>
+					<BiSearch className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl' />
+				</div>
+			</form>
+
+			{filteredCenters?.length === 0 ? (
+				<p className='text-center text-gray-500 mt-6'>
+					"{searchTerm}" bo‘yicha hech qanday markaz topilmadi.
+				</p>
+			) : (
+				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8'>
+					{filteredCenters?.map(center => (
+						<CardWith3DEffect key={center.id} center={center} t={t} url={url} />
+					))}
+				</div>
+			)}
 		</section>
 	)
 }
@@ -122,7 +156,9 @@ function CardWith3DEffect({
 	t: (key: string) => string
 	url: string
 }) {
+	const token = localStorage.getItem('accessToken')
 	const [transform, setTransform] = useState('')
+	const [liked, setLiked] = useState(false)
 
 	const {
 		data: myData,
@@ -130,30 +166,13 @@ function CardWith3DEffect({
 		error: myDataError,
 	} = useGetHooks<UserIDResponse>(`${url}/users/mydata`)
 
-	const {deleteItem, loading, error} = useDelete()
+	const { deleteItem, loading, error } = useDelete()
 
-	if (myDataLoading || loading) {
-		const skeletonArray = Array(10).fill(null)
+	const { postData, loading: likeLoading, error: likeError } = usePostHooks()
 
-		return (
-			<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 mt-[100px] mb-[40px]'>
-				{skeletonArray.map((_, i) => (
-					<div
-						key={i}
-						className='flex flex-col space-y-3 border border-gray-200 p-4 rounded-lg shadow-sm'
-					>
-						<Skeleton className='h-[125px] w-full rounded-xl' />
-						<div className='space-y-2'>
-							<Skeleton className='h-4 w-[80%]' />
-							<Skeleton className='h-4 w-[60%]' />
-						</div>
-					</div>
-				))}
-			</div>
-		)
-	}
+	console.log(myDataLoading)
 
-	if (myDataError || error) {
+	if (myDataError || error || likeError) {
 		return (
 			<div className='fixed w-full h-screen bg-white z-50 px-5'>
 				<div className='flex justify-center items-center h-full'>
@@ -188,113 +207,156 @@ function CardWith3DEffect({
 	}
 
 	const handleDelete = async (e: React.FormEvent) => {
-     e.preventDefault()
+		e.preventDefault()
 
-		 await deleteItem(`${url}/centers/${center?.id}`)
+		await deleteItem(`${url}/centers/${center?.id}`)
+
+		toast.success("O'chirildi...")
+		setTimeout(() => {
+			window.location.reload()
+		}, 3500)
+	}
+
+	const handleLike = async (e: React.FormEvent) => {
+		e.preventDefault()
+
+		if (liked) return
+
+		const like = center?.id
+
+		try {
+			await postData(
+				`${url}/liked`,
+				{
+					centerId: like,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-Type': 'application/json',
+					},
+				}
+			)
+			toast.success('Like qoʻshildi!')
+			setLiked(true)
+		} catch (err) {
+			console.log(err)
+			toast.error('Like qoʻshilmadi.')
+		}
 	}
 
 	return (
-		<Card
-			className='relative border border-blue-200 shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden rounded-lg cursor-pointer'
-			onMouseMove={handleMouseMove}
-			onMouseLeave={handleMouseLeave}
-			style={{
-				transform,
-				transition: 'transform 0.2s ease',
-			}}
-		>
-			<div className='absolute top-3 right-3 flex gap-2'>
-				{myData?.data?.id === center?.user?.id && (
-					<>
-						<Button
-							variant='ghost'
-							size='icon'
-							className='
+		<>
+			<Card
+				className='relative border border-blue-200 shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden rounded-lg'
+				onMouseMove={handleMouseMove}
+				onMouseLeave={handleMouseLeave}
+				style={{
+					transform,
+					transition: 'transform 0.2s ease',
+				}}
+			>
+				<div className='absolute top-3 right-3 flex gap-2'>
+					{myData?.data?.id === center?.user?.id && (
+						<>
+							<Button
+								variant='ghost'
+								size='icon'
+								className='
       bg-[#461773] hover:bg-[#5f2099]
       text-white hover:text-yellow-400
       border border-[#fff]
       shadow-md hover:shadow-lg
       rounded-full p-2 transition duration-300 ease-in-out
-      focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-1
+      focus:outline-none focus:ring-2 cursor-pointer focus:ring-yellow-400 focus:ring-offset-1
     '
-						>
-							<FaEdit className='text-xl' />
-						</Button>
+							>
+								<FaEdit className='text-xl' />
+							</Button>
 
-						<Button
-						  onClick={handleDelete}
-							variant='ghost'
-							size='icon'
-							className='
+							<Button
+								onClick={handleDelete}
+								variant='ghost'
+								size='icon'
+								className='
       bg-[#461773] hover:bg-[#5f2099]
       text-white hover:text-red-400
       border border-[#fff]
       shadow-md hover:shadow-lg
       rounded-full p-2 transition duration-300 ease-in-out
-      focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-1
+      focus:outline-none focus:ring-2 cursor-pointer focus:ring-red-400 focus:ring-offset-1
     '
-						>
-							<FaTrash className='text-xl' />
-						</Button>
-					</>
+							>
+								{loading ? <BtnLoading /> : <FaTrash className='text-xl' />}
+							</Button>
+						</>
+					)}
+
+					<Button
+						onClick={handleLike}
+						variant='ghost'
+						size='icon'
+						disabled={likeLoading || liked}
+						className='
+		bg-[#461773] hover:bg-[#5f2099]
+		text-white hover:text-pink-400
+		border border-[#fff]
+		shadow-md hover:shadow-lg
+		rounded-full p-2 transition duration-300 ease-in-out
+		focus:outline-none focus:ring-2 cursor-pointer focus:ring-pink-400 focus:ring-offset-1
+	'
+					>
+						{likeLoading ? (
+							<BtnLoading />
+						) : (
+							<AiOutlineHeart
+								className={`text-xl ${liked ? 'text-pink-400' : ''}`}
+							/>
+						)}
+					</Button>
+				</div>
+
+				{center?.image && (
+					<img
+						src={`${url}/image/${center?.image}`}
+						alt={center?.name}
+						className='w-full h-[200px] object-cover mt-[-25px]'
+					/>
 				)}
 
-				<Button
-					variant='ghost'
-					size='icon'
-					className='
-      bg-[#461773] hover:bg-[#5f2099]
-      text-white hover:text-pink-400
-      border border-[#fff]
-      shadow-md hover:shadow-lg
-      rounded-full p-2 transition duration-300 ease-in-out
-      focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-offset-1
-    '
-				>
-					<AiOutlineHeart className='text-xl' />
-				</Button>
-			</div>
+				<CardHeader>
+					<CardTitle className='text-2xl font-semibold text-[#461773] line-clamp-1'>
+						{center?.name}
+					</CardTitle>
+				</CardHeader>
 
-			{center?.image && (
-				<img
-					src={`${url}/image/${center?.image}`}
-					alt={center?.name}
-					className='w-full h-[200px] object-cover mt-[-25px]'
-				/>
-			)}
+				<CardContent className='space-y-1 text-sm mt-[-15px] text-muted-foreground'>
+					<div className='flex items-center gap-2'>
+						<span className='text-[#461773] font-semibold'>📍 Hudud:</span>
+						<span>{center?.region?.name || "Noma'lum"}</span>
+					</div>
 
-			<CardHeader>
-				<CardTitle className='text-2xl font-semibold text-[#461773] line-clamp-1'>
-					{center?.name}
-				</CardTitle>
-			</CardHeader>
+					<a href={`tel:${center.phone}`} className='flex items-center gap-2'>
+						<span className='text-[#461773] font-semibold'>📞 Telefon:</span>
+						<span>{center?.phone}</span>
+					</a>
 
-			<CardContent className='space-y-1 text-sm mt-[-15px] text-muted-foreground'>
-				<div className='flex items-center gap-2'>
-					<span className='text-[#461773] font-semibold'>📍 Hudud:</span>
-					<span>{center?.region?.name || "Noma'lum"}</span>
-				</div>
+					<div className='flex items-center gap-2'>
+						<span className='text-[#461773] font-semibold'>👤 Mas'ul:</span>
+						<span>{`${center?.user?.firstName} ${center?.user?.lastName}`}</span>
+					</div>
 
-				<a href={`tel:${center.phone}`} className='flex items-center gap-2'>
-					<span className='text-[#461773] font-semibold'>📞 Telefon:</span>
-					<span>{center?.phone}</span>
-				</a>
-
-				<div className='flex items-center gap-2'>
-					<span className='text-[#461773] font-semibold'>👤 Mas'ul:</span>
-					<span>{`${center?.user?.firstName} ${center?.user?.lastName}`}</span>
-				</div>
-
-				<div className='mt-4'>
-					<Link
-						to={`/center/${center?.id}`}
-						className='inline-block text-white bg-[#461773] hover:bg-[#5f2099] px-4 py-2 rounded-md text-sm font-medium transition'
-					>
-						{t('learnMore')}
-					</Link>
-				</div>
-			</CardContent>
-		</Card>
+					<div className='mt-4'>
+						<Link
+							to={`/center/${center?.id}`}
+							className='inline-block text-white bg-[#461773] hover:bg-[#5f2099] px-4 py-2 rounded-md text-sm font-medium transition'
+						>
+							{t('learnMore')}
+						</Link>
+					</div>
+				</CardContent>
+			</Card>
+		</>
 	)
 }
 

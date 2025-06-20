@@ -104,7 +104,7 @@ export default function CreateCenterForm() {
 	}
 
 	return (
-		<section className='max-w-xl mx-auto py-20 px-6'>
+		<section className='w-full mx-auto py-20 px-6'>
 			<h2 className='text-3xl font-bold text-center text-purple-700 mb-8'>
 				O‘quv Markaz Yaratish
 			</h2>

@@ -1,26 +1,28 @@
-import { Card, CardContent } from '@/components/ui/card'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
-	Star,
-	Phone,
+	Clock,
+	GraduationCap,
 	MapPin,
 	Pencil,
+	Phone,
+	Star,
 	Trash2,
-	GraduationCap,
-	Clock,
 } from 'lucide-react'
 import React, { useState } from 'react'
-import useGetHooks from '../Hooks/useGetHooks'
+import { FaStar } from 'react-icons/fa'
+import { HiArrowLeft } from 'react-icons/hi2'
 import { useParams } from 'react-router-dom'
-import usePostHooks from '../Hooks/usePostHooks'
 import { toast } from 'react-toastify'
 import { useDelete } from '../Hooks/useDeleteHooks'
-import { FaStar } from 'react-icons/fa'
+import useGetHooks from '../Hooks/useGetHooks'
+import usePostHooks from '../Hooks/usePostHooks'
 import usePutData from '../Hooks/usePutData'
-import { HiArrowLeft } from 'react-icons/hi2'
+import CourseModal from './NavbatModal'
+import { FaXmark } from 'react-icons/fa6'
 
 interface User {
 	id: string
@@ -80,6 +82,15 @@ interface FormData {
 	star: number
 }
 
+interface Filials {
+	id: string
+	name: string
+	centerId: string
+	image: string
+	address: string
+	phone: string
+}
+
 const ProductDetails = () => {
 	const url = import.meta.env.VITE_API_URL
 	const { id } = useParams<{ id: string }>()
@@ -89,10 +100,18 @@ const ProductDetails = () => {
 	const [comments, setComment] = useState<string>('')
 	const [rating, setRating] = useState<number>(0)
 	const [editId, setEditId] = useState<string | null>(null)
+	const [open, onOpenChange] = useState<boolean>(false)
 
 	const { data, isLoading, error } = useGetHooks<{ data: Center }>(
 		`${url}/centers/${id}`
 	)
+
+	const {
+		data: filials,
+		isLoading: filialsLoad,
+		error: filialsError,
+	} = useGetHooks<{ data: Filials[] }>(`${url}/filials`)
+
 	const {
 		data: myData,
 		isLoading: myDataLoading,
@@ -198,12 +217,20 @@ const ProductDetails = () => {
 		}, 3500)
 	}
 
+	console.log('filials', filials)
+	console.log(filialsLoad)
+	console.log(filialsError)
+
 	return (
 		<>
 			{isEdit && (
 				<div className='fixed z-10 w-full h-screen'>
 					<div className='absolute inset-0 bg-black/50 backdrop-blur flex items-center justify-center'>
 						<div className='bg-white rounded-xl shadow-xl p-6 max-w-md w-full'>
+							<FaXmark
+								className='text-2xl'
+								onClick={() => setIsEdit(!isEdit)}
+							/>
 							<h2 className='text-xl font-semibold mb-4 text-center'>
 								Kommentni tahrirlash
 							</h2>
@@ -237,6 +264,8 @@ const ProductDetails = () => {
 				</div>
 			)}
 
+			<CourseModal open={open} onOpenChange={onOpenChange} id={Number(center?.id)} />
+
 			<section className='mt-10 max-w-6xl mx-auto px-4 py-6'>
 				<button
 					onClick={() => window.history.back()}
@@ -257,6 +286,39 @@ const ProductDetails = () => {
 								Bizning filiallar
 							</h3>
 
+							<div className='flex flex-col gap-4 mt-4'>
+								{filials?.data
+									?.filter((filial: Filials) => filial?.centerId === center?.id)
+									.map((filial: Filials) => (
+										<div
+											key={filial?.id}
+											className='flex items-start gap-4 border rounded-lg p-4 shadow-sm hover:shadow-md transition'
+										>
+											{/* Rasm bloki */}
+											<div className='w-28 h-28 rounded-md overflow-hidden border bg-gray-100 flex-shrink-0'>
+												<img
+													src={`https://findcourse.net.uz/api/image/${filial?.image}`}
+													alt={filial?.name}
+													className='w-full h-full object-cover'
+												/>
+											</div>
+
+											{/* Matnlar bloki */}
+											<div className='flex flex-col justify-between'>
+												<p className='text-lg font-semibold text-gray-800'>
+													{filial?.name}
+												</p>
+												<p className='text-sm text-gray-600'>
+													📞 {filial?.phone}
+												</p>
+												<p className='text-sm text-gray-600'>
+													📍 {filial?.address}
+												</p>
+											</div>
+										</div>
+									))}
+							</div>
+
 							<div>
 								<div className='flex items-center gap-2 font-medium text-sm md:text-base'>
 									<GraduationCap className='w-4 h-4' />
@@ -269,7 +331,10 @@ const ProductDetails = () => {
 								))}
 							</div>
 
-							<Button className='bg-purple-800 text-white hover:bg-purple-900 w-full'>
+							<Button
+								onClick={() => onOpenChange(!open)}
+								className='bg-purple-800 text-white hover:bg-purple-900 w-full'
+							>
 								<Clock className='w-4 h-4 mr-2' /> Darsga yozilish
 							</Button>
 						</CardContent>

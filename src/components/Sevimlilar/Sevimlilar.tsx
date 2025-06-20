@@ -1,43 +1,11 @@
-import { useState, useEffect } from 'react'
-import { AiOutlineHeart } from 'react-icons/ai'
+import { useState } from 'react'
+import { IoHeartDislikeOutline } from "react-icons/io5";
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Link } from 'react-router-dom'
-import useGetHooks from '../Hooks/useGetHooks'
 import { Skeleton } from '@/components/ui/skeleton'
-
-interface Comment {
-  id: number;
-  content: string;
-  createdAt: string;
-}
-
-interface Like {
-  centerId: number;
-}
-
-interface Resource {
-  id: number;
-  title: string;
-  url: string;
-}
-
-interface User {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  password: string;
-  image: string;
-  isActive: boolean;
-  role: string;
-  createdAt: string;
-  updatedAt: string;
-  comments: Comment[];
-  likes: Like[];
-  resources: Resource[];
-}
+import useGetHooks from '../Hooks/useGetHooks'
+import { useTranslation } from 'react-i18next'
 
 interface Center {
   id: number;
@@ -49,18 +17,8 @@ interface Center {
 }
 
 function Sevimlilar() {
+  const { t } = useTranslation()
   const url = import.meta.env.VITE_API_URL
-  const { data, isLoading, error } = useGetHooks<{ data: User }>(`${url}/users/mydata`)
-  const [centerIds, setCenterIds] = useState<number[]>([])
-  const { data: centers, isLoading: load, error: xatolik } = useGetHooks<Center[]>(`${url}/centers/${centerIds}`)
-
-  useEffect(() => {
-    if (data?.data?.likes) {
-      const ids = data.data.likes.map((like) => like.centerId)
-      setCenterIds(ids)
-    }
-  }, [data])
-
   const [transform, setTransform] = useState<{ [key: number]: string }>({})
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, id: number) => {
@@ -79,7 +37,12 @@ function Sevimlilar() {
     setTransform(prev => ({ ...prev, [id]: 'perspective(600px) rotateX(0deg) rotateY(0deg)' }))
   }
 
-  if (isLoading || load) {
+  const {data: centers, isLoading, error} = useGetHooks<Center[]>(`${url}/centers/like`)
+
+  console.log('center', centers);
+  
+
+  if (isLoading) {
     return (
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
         {[...Array(3)].map((_, idx) => (
@@ -89,20 +52,20 @@ function Sevimlilar() {
     )
   }
 
-  if (error || xatolik) {
-    return <p className="text-red-500">Xatolik yuz berdi.</p>
+  if (error) {
+    return <p className="text-red-500">Xatolik yuz berdi. Ma'lumotlar yuklanmadi.</p>
   }
 
   return (
-    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-      {Array.isArray(centers) && centers?.map((center) => (
+    <div className='w-[90%] m-auto my-[50px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+      {centers?.map((center) => (
         <Card
           key={center?.id}
           className='relative border border-blue-200 shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden rounded-lg cursor-pointer'
-          onMouseMove={(e) => handleMouseMove(e, center?.id)}
-          onMouseLeave={() => handleMouseLeave(center?.id)}
+          onMouseMove={(e) => handleMouseMove(e, center.id)}
+          onMouseLeave={() => handleMouseLeave(center.id)}
           style={{
-            transform: transform[center?.id],
+            transform: transform[center.id],
             transition: 'transform 0.2s ease',
           }}
         >
@@ -111,11 +74,11 @@ function Sevimlilar() {
             size='icon'
             className='absolute top-3 right-3 bg-[#461773] hover:bg-[#5f2099] text-white hover:text-pink-400 border border-[#fff] shadow-md hover:shadow-lg rounded-full p-2 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-offset-1 cursor-pointer'
           >
-            <AiOutlineHeart className='text-xl' />
+            <IoHeartDislikeOutline className='text-xl' />
           </Button>
 
           <img
-            src={center?.image}
+            src={`${url}/image/${center?.image}`}
             alt={center?.name}
             className='w-full h-[200px] object-cover mt-[-25px]'
           />
@@ -139,7 +102,7 @@ function Sevimlilar() {
 
             <div className='flex items-center gap-2'>
               <span className='text-[#461773] font-semibold'>👤 Mas'ul:</span>
-              <span>{center?.name}</span>
+              <span>{center?.responsible || 'Nomaʼlum'}</span>
             </div>
 
             <div className='mt-4'>
@@ -147,7 +110,7 @@ function Sevimlilar() {
                 to={`/center/${center?.id}`}
                 className='inline-block text-white bg-[#461773] hover:bg-[#5f2099] px-4 py-2 rounded-md text-sm font-medium transition'
               >
-                Batafsil
+                {t('learnMore')}
               </Link>
             </div>
           </CardContent>

@@ -122,7 +122,7 @@ function Header() {
 					{token && (
 						<>
 							<Link
-								to='#'
+								to='/navbatlar'
 								className='text-gray-600 hover:text-[#461773] font-medium flex items-center gap-2 relative group transition-colors duration-300'
 							>
 								<MdQueue />
@@ -226,7 +226,7 @@ function Header() {
 					{token ? (
 						<>
 							<Link
-								to='#'
+								to='/navbatlar'
 								className='text-gray-600 hover:text-[#461773] font-medium flex items-center gap-2 relative group transition-colors duration-300'
 							>
 								<MdQueue />
