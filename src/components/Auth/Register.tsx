@@ -13,6 +13,11 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import usePostHooks from '../Hooks/usePostHooks'
+import { toast } from 'react-toastify'
+
+interface Upload {
+	data: string
+}
 
 function Register() {
 	const url = import.meta.env.VITE_API_URL
@@ -30,32 +35,52 @@ function Register() {
 	const [phone, setPhone] = useState<string>('')
 	const [password, setPassword] = useState<string>('')
 	const [role, setRole] = useState<string>('')
-	const [image, setImage] = useState<string>('')
+	const [image, setImage] = useState<File | null>(null)
 	const navigate = useNavigate()
+
+	const { postData: uploadData } = usePostHooks<Upload>()
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 
-		const formData = new FormData()
-		formData.append('firstName', firstName)
-		formData.append('lastName', lastName)
-		formData.append('email', email)
-		formData.append('phone', phone)
-		formData.append('password', password)
-		formData.append('role', role)
-		if (image) {
-			formData.append('image', image)
+		try {
+			let uploadedImagePath = ''
+
+			if (image) {
+				const imageFormData = new FormData()
+				imageFormData.append('image', image)
+
+				const photo = await uploadData(`${url}/upload`, imageFormData)
+
+				if (photo?.data) {
+					uploadedImagePath = photo.data
+				}
+			}
+
+			const formData = new FormData()
+			formData.append('firstName', firstName)
+			formData.append('lastName', lastName)
+			formData.append('email', email)
+			formData.append('phone', phone)
+			formData.append('password', password)
+			formData.append('role', role)
+
+			if (uploadedImagePath) {
+				formData.append('image', uploadedImagePath)
+			}
+
+			await postData(`${url}/users/register`, formData, {
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+
+			localStorage.setItem('email', email)
+			toast.success("Ro'yxatdan o'tish muvaffaqiyatli yakunlandi")
+		} catch (error) {
+			console.error(error)
+			toast.error('Xatolik yuz berdi')
 		}
-
-		const formDataObj = Object.fromEntries(formData.entries())
-
-		await postData(`${url}/users/register`, formDataObj, {
-			headers: {
-				'Content-Type': 'multipart/form-data',
-			},
-		})
-
-		localStorage.setItem('email', email)
 	}
 
 	useEffect(() => {
@@ -193,7 +218,11 @@ function Register() {
 								id='image'
 								type='file'
 								accept='image/*'
-								onChange={e => setImage(e.target.value)}
+								onChange={e => {
+									if (e.target.files && e.target.files[0]) {
+										setImage(e.target.files[0])
+									}
+								}}
 								className='bg-white/60 border border-white/30 w-full'
 							/>
 						</div>

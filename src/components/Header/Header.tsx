@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
-import { GoHeart } from 'react-icons/go'
 import { useEffect, useState } from 'react'
 import LanguageModal from './Language'
 import { FiMenu, FiX } from 'react-icons/fi'
@@ -74,10 +73,9 @@ function Header() {
 					/>
 				</Link>
 
-				<nav className='flex items-center gap-5 max-[1330px]:hidden'>
+				<nav className='flex items-center gap-5 max-[1024px]:hidden'>
 					{[
 						{ to: '/', label: t('home') },
-						{ to: '#', label: t('about') },
 						{ to: '/resurs', label: t('reuses') },
 					].map((item, index) => {
 						const isActive = location.pathname === item?.to
@@ -99,25 +97,6 @@ function Header() {
 							</Link>
 						)
 					})}
-
-					<Link
-						to='/like'
-						className={`text-gray-600 font-medium flex items-center gap-2 relative group transition-colors duration-300 ${
-							location.pathname === '/like'
-								? 'text-[#461773]'
-								: 'hover:text-[#461773]'
-						}`}
-					>
-						<GoHeart className='text-lg' />
-						{t('like')}
-						<span
-							className={`absolute bottom-0 left-0 h-0.5 bg-[#461773] transition-all duration-300 ${
-								location.pathname === '/like'
-									? 'w-full'
-									: 'w-0 group-hover:w-full'
-							}`}
-						></span>
-					</Link>
 
 					{token && (
 						<>
@@ -170,7 +149,7 @@ function Header() {
 
 					<div
 						onClick={toggleMenu}
-						className={`min-[1330px]:hidden flex items-center justify-center text-gray-600 bg-transparent transition-all duration-300 rounded-lg cursor-pointer
+						className={`min-[1024px]:hidden flex items-center justify-center text-gray-600 bg-transparent transition-all duration-300 rounded-lg cursor-pointer
     ${menuOpen ? 'hidden' : 'block'} 
     min-[750px]:border min-[750px]:border-[#461773] min-[750px]:px-[10px] min-[750px]:py-[7px]`}
 					>
@@ -209,18 +188,8 @@ function Header() {
 					<Link to='/' className='text-[18px] font-semibold text-[#461773]'>
 						{t('home')}
 					</Link>
-					<Link to='#' className='text-[18px] font-semibold text-gray-600'>
-						{t('about')}
-					</Link>
 					<Link to='/resurs' className='text-[18px] font-semibold text-gray-600'>
 						{t('reuses')}
-					</Link>
-					<Link
-						to='/like'
-						className='text-[18px] font-semibold text-gray-600 flex items-center gap-2'
-					>
-						<GoHeart className='text-lg' />
-						{t('like')}
 					</Link>
 
 					{token ? (

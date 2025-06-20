@@ -14,8 +14,8 @@ import ResurslarPage from './pages/Resurslar/Resurslar'
 import RefreshToken from './components/Auth/RefreshToken'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import SevimlilarPage from './pages/Sevimlilar/Sevimlilar'
 import Navbatlar from './pages/Navbatlar/Navbatlar'
+import MyCenterPage from './pages/Ceo/MyCenter'
 
 function App() {
 	return (
@@ -42,8 +42,8 @@ function App() {
 				<Route path='/ceo' element={<CeoCreate />} />
 				<Route path='/elon' element={<ElonPage />} />
 				<Route path='/resurs' element={<ResurslarPage />} />
-				<Route path='/like' element={<SevimlilarPage />} />
 				<Route path='/navbatlar' element={<Navbatlar/>} />
+				<Route path='/mycenter' element={<MyCenterPage/>} />
 
 				<Route path='/profile' element={<ProfilePage />} />
 

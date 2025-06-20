@@ -68,7 +68,7 @@ const CeoDropdown = () => {
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56 mt-2 shadow-lg rounded-md border bg-white dark:bg-zinc-900">
-          <DropdownMenuItem onClick={() => (window.location.href = "/my-centers")} className="flex items-center gap-2">
+          <DropdownMenuItem onClick={() => (window.location.href = "/mycenter")} className="flex items-center gap-2">
             <HiOutlineBuildingLibrary className="text-lg" />
             <span>{t("ceoEdu")}</span>
           </DropdownMenuItem>
