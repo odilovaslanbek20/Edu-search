@@ -37,7 +37,12 @@ export default function Profile() {
 	const user = data?.data
 
 	const deleteUser = async () => {
-		await deleteItem(`${url}/users/${user?.id}`)
+		await deleteItem(`${url}/users/${user?.id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'Content-Type': 'application/json'
+			}
+		})
 		localStorage.clear()
 		navigate('/')
 		window.location.reload()
